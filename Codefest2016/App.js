@@ -4,7 +4,6 @@ import React, {
   Text,
   View,
   StyleSheet,
-  TouchableOpacity,
 } from 'react-native';
 
 import DropDown, {
@@ -18,13 +17,6 @@ var MainPage = require('./CodeFestModules/MainPage');
 
 class App extends Component {
   
-	constructor(props) {
-		super(props);
-
-		this.state = {
-	  		usernames: ''
-		};
-	}
 
 	_getOptionList() {
 		return this.refs['OPTIONLIST'];
@@ -87,29 +79,6 @@ var styles = StyleSheet.create({
     bottom: 0,
     justifyContent: 'flex-end',
     alignItems: 'center',
-  },
-  scrollview: {
-    alignItems: 'center',
-    paddingVertical: 40,
-  },
-  button: {
-    flex: 1,
-    marginTop: 10,
-    backgroundColor: 'rgba(220,220,220,0.7)',
-    paddingHorizontal: 18,
-    paddingVertical: 12,
-    borderRadius: 20,
-  },
-  back: {
-    position: 'absolute',
-    top: 20,
-    left: 12,
-    backgroundColor: 'rgba(255,255,255,0.4)',
-    padding: 12,
-    borderRadius: 20,
-    width: 80,
-    alignItems: 'center',
-    justifyContent: 'center',
   },
 });
 

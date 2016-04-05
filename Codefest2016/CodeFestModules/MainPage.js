@@ -12,13 +12,22 @@ var MapView = require('react-native-maps');
 
 var { width, height } = Dimensions.get('window');
 
+var greenDot = require('../circle-green/ios/Icon-12@2x.png');
+var yellowDot = require('../circle-yellow/ios/Icon-12@2x.png');
+var redDot = require('../circle-red/ios/Icon-12@2x.png');
+
 const ASPECT_RATIO = width / height;
 const LATITUDE = 40.440624;
 const LONGITUDE = -79.995888;
-const LATITUDE_DELTA = 0.015;
+const LATITUDE_DELTA = 0.025;
 const LONGITUDE_DELTA = LATITUDE_DELTA * ASPECT_RATIO;
 
 var MainPage = React.createClass({
+  
+  componentWillMount(){
+    this._loadTrashCans();
+  },
+
   getInitialState() {
     return {
       region: {
@@ -27,13 +36,41 @@ var MainPage = React.createClass({
         latitudeDelta: LATITUDE_DELTA,
         longitudeDelta: LONGITUDE_DELTA,
       },
+      trashCans:[],
     };
   },
 
   onRegionChange(region) {
-    this.setState({ region });
+    if (this.isMounted()) {
+      this.setState({ region });
+    }
   },
 
+
+  //get all trash cans and parse into lat lons
+  async _loadTrashCans() {
+      return fetch('http://128.237.192.190:8000/listcans')
+        .then((response) => response.json())
+        .then((json) => {
+          
+          this.setState({trashCans:json.result});
+          console.log("TrashCans are: \n");
+          console.log(trashCans);
+          return json.result;
+      })
+      .catch((error) => {
+        return [];
+      });
+  },
+
+  getDot(marker){
+    if (marker.state == 0)
+      return greenDot;
+    else if (marker.state ==1)
+      return yellowDot;
+    else
+      return redDot;
+  },
 
   randomRegion() {
     var { region } = this.state;
@@ -54,6 +91,13 @@ var MainPage = React.createClass({
           region={this.state.region}
           onRegionChange={this.onRegionChange}
         >
+        {this.state.trashCans.map(marker => (
+            <MapView.Marker
+              coordinate={{latitude:marker.lat, longitude:marker.lon}}
+
+              image = {this.getDot(marker)}/>
+          ))}
+
         </MapView>
       </View>
     );
