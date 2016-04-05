@@ -13,10 +13,10 @@ import DropDown, {
 } from 'react-native-selectme';
 
 var MainPage = require('./CodeFestModules/MainPage');
-
+var NavBar = require('./CodeFestModules/NavBar');
 
 class App extends Component {
-  
+
 
 	_getOptionList() {
 		return this.refs['OPTIONLIST'];
@@ -33,7 +33,7 @@ class App extends Component {
   	}
 
 	render(){
-		
+
 		return (
 
 			<View style={styles.optionBox}>
@@ -59,16 +59,16 @@ class App extends Component {
 		      </Select>
 		      <OptionList ref="OPTIONLIST"/>
 			</View>
-			
-		  	
+
+
 		);
 	}
 }
 
 var styles = StyleSheet.create({
 	optionBox: {
-		flex: 1, 
-		justifyContent: 'center', 
+		flex: 1,
+		justifyContent: 'center',
 		alignItems: 'center'
 	},
   container: {

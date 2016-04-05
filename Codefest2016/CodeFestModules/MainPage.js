@@ -9,7 +9,7 @@ var {
 } = React;
 
 var MapView = require('react-native-maps');
-
+var NavBar = require('./NavBar')
 var { width, height } = Dimensions.get('window');
 
 var greenDot = require('../circle-green/ios/Icon-12@2x.png');
@@ -23,7 +23,7 @@ const LATITUDE_DELTA = 0.025;
 const LONGITUDE_DELTA = LATITUDE_DELTA * ASPECT_RATIO;
 
 var MainPage = React.createClass({
-  
+
   componentWillMount(){
     this._loadTrashCans();
   },
@@ -52,7 +52,7 @@ var MainPage = React.createClass({
       return fetch('http://128.237.192.190:8000/listcans')
         .then((response) => response.json())
         .then((json) => {
-          
+
           this.setState({trashCans:json.result});
           console.log("TrashCans are: \n");
           console.log(trashCans);
@@ -83,39 +83,48 @@ var MainPage = React.createClass({
 
   render() {
     return (
-      <View style={styles.container}>
-        <MapView
-          ref="map"
-          mapType="terrain"
-          style={styles.map}
-          region={this.state.region}
-          onRegionChange={this.onRegionChange}
-        >
-        {this.state.trashCans.map(marker => (
-            <MapView.Marker
-              coordinate={{latitude:marker.lat, longitude:marker.lon}}
+      <View style={styles.mainContainer}>
+        <NavBar />
+          <View style={styles.container}>
+            <MapView
+              ref="map"
+              mapType="terrain"
+              style={styles.map}
+              region={this.state.region}
+              onRegionChange={this.onRegionChange}
+            >
+            {this.state.trashCans.map(marker => (
+                <MapView.Marker
+                  coordinate={{latitude:marker.lat, longitude:marker.lon}}
 
-              image = {this.getDot(marker)}/>
-          ))}
+                  image = {this.getDot(marker)}/>
+              ))}
 
-        </MapView>
+            </MapView>
+          </View>
       </View>
     );
   },
 });
 
 var styles = StyleSheet.create({
+  mainContainer: {
+      flex: 1
+  },
   container: {
-    position: 'absolute',
+    // position: 'absolute',
     top: 0,
     left: 0,
     right: 0,
     bottom: 0,
-    justifyContent: 'flex-end',
-    alignItems: 'center',
+    flex: 1,
+    flexDirection: 'row'
+    // justifyContent: 'flex-end',
+    // alignItems: 'center',
   },
   map: {
     position: 'absolute',
+    flex: 1,
     top: 0,
     left: 0,
     right: 0,
