@@ -9,7 +9,10 @@ var {
 } = React;
 
 var MapView = require('react-native-maps');
-var NavBar = require('./NavBar')
+// var NavBar = require('./NavBar');
+var NavigationBar = require('./react-native-navbar');
+var TrashPandaListView = require('./ItemListView');
+
 var { width, height } = Dimensions.get('window');
 
 var greenDot = require('../circle-green/ios/Icon-12@2x.png');
@@ -22,8 +25,20 @@ const LONGITUDE = -79.995888;
 const LATITUDE_DELTA = 0.025;
 const LONGITUDE_DELTA = LATITUDE_DELTA * ASPECT_RATIO;
 
-var MainPage = React.createClass({
+import LogoutIcon from '../components/Logout';
+import SearchIcon from '../components/Search';
+import ScanIcon from '../components/Scan';
+import ListInactiveIcon from '../components/List';
+import MapInactiveIcon from '../components/Map';
 
+var MainPage = React.createClass({
+  navigateItemListView: function(){
+   this.props.navigator.push({
+     title: 'Item List View',
+     component: TrashPandaListView,
+     navigationBarHidden: true,
+   })
+ },
   componentWillMount(){
     this._loadTrashCans();
   },
@@ -82,9 +97,34 @@ var MainPage = React.createClass({
   },
 
   render() {
+    // const rightButtonConfig = {
+    //   title: 'Item List View',
+    //   handler: () => this.props.navigator.push({
+    //     component: ItemListView,
+    //   }),
+    // };
     return (
       <View style={styles.mainContainer}>
-        <NavBar />
+        <NavigationBar
+          tintColor={'black'}
+          style={{marginBottom: 30}}
+          leftButton={
+              <LogoutIcon
+                  onPress={() => alert('logout')}/>}
+          centerButton1={
+              <SearchIcon
+                  onPress={() => alert('center 1')}/>}
+          centerButton2={
+              <ScanIcon
+                  onPress={() => alert('center 2')}/>}
+          centerButton3={
+              <MapInactiveIcon
+                  onPress={() => alert('center 3')}/>}
+          rightButton={
+              <ListInactiveIcon
+                  onPress={() => this.navigateItemListView()}
+              />}
+        />
           <View style={styles.container}>
             <MapView
               ref="map"

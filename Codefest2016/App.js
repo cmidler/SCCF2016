@@ -13,7 +13,6 @@ import DropDown, {
 } from 'react-native-selectme';
 
 var MainPage = require('./CodeFestModules/MainPage');
-var NavBar = require('./CodeFestModules/NavBar');
 
 class App extends Component {
 
@@ -27,7 +26,7 @@ class App extends Component {
 	  	this.props.navigator.replace({
 	        title: 'Main Page',
 	        component: MainPage,
-	        navigationBarHidden: false,
+	        navigationBarHidden: true,
 	        passProps: {value: 'text'}
 	    });
   	}
@@ -59,8 +58,6 @@ class App extends Component {
 		      </Select>
 		      <OptionList ref="OPTIONLIST"/>
 			</View>
-
-
 		);
 	}
 }
