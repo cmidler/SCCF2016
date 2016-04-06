@@ -14,6 +14,7 @@ var MapView = require('react-native-maps');
 // var NavBar = require('./NavBar');
 var NavigationBar = require('./react-native-navbar');
 var TrashPandaListView = require('./ItemListView');
+var TimerMixin = require('react-timer-mixin');
 
 var { width, height } = Dimensions.get('window');
 var Button = require('react-native-button');
@@ -35,6 +36,8 @@ import ListInactiveIcon from '../components/List';
 import MapInactiveIcon from '../components/Map';
 
 var MainPage = React.createClass({
+  mixins: [TimerMixin],
+
   navigateItemListView: function(){
    this.props.navigator.push({
      title: 'Item List View',
@@ -273,7 +276,11 @@ var MainPage = React.createClass({
       longitude: region.longitude + (Math.random() - 0.5) * region.longitudeDelta / 2,
     };
   },
-
+  componentDidMount: function() {
+    this.setTimeout(function() {
+      this.setState({showMap: true});
+    }.bind(this), 250);
+  },
   render() {
     // const rightButtonConfig = {
     //   title: 'Item List View',
