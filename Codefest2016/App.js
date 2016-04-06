@@ -16,6 +16,34 @@ var MainPage = require('./CodeFestModules/MainPage');
 
 class App extends Component {
 
+	componentWillMount(){
+    	this._loadUserList();
+  	}
+
+  	constructor(props) {
+	    super(props);
+
+	    this.state = {
+	      userList: []
+	    };
+
+  	}
+
+  	//get all trash cans and parse into lat lons
+	async _loadUserList() {
+		console.log("load user list is called");
+	  return fetch('http://128.237.221.45:8000/listusers')
+	    .then((response) => response.json())
+	    .then((json) => {
+
+			this.setState({userList:json.result});
+			console.log("user list is " + userList)
+			return json.result;
+	  })
+	  .catch((error) => {
+	    return [];
+	  });
+	}
 
 	_getOptionList() {
 		return this.refs['OPTIONLIST'];
@@ -23,11 +51,25 @@ class App extends Component {
 
 	nextPage(value)
 	{
+
+		var user = null;
+
+		for(var i = 0; i<this.state.userList.length; i++)
+		{
+			var name = this.state.userList[i].first_name + ' ' + this.state.userList[i].last_name;
+
+			if (name == value)
+			{
+				user = this.state.userList[i];
+				break;
+			}
+		}
+		console.log(user);
 	  	this.props.navigator.replace({
 	        title: 'Main Page',
 	        component: MainPage,
 	        navigationBarHidden: true,
-	        passProps: {value: 'text'}
+	        passProps: {'user': user}
 	    });
   	}
 
@@ -48,13 +90,12 @@ class App extends Component {
 		        	}
 		        }
 		      >
-		        <Option>Arne</Option>
-		        <Option>Aubrey</Option>
-		        <Option>Chase</Option>
-		        <Option>Dan</Option>
-		        <Option>James</Option>
-		        <Option>Matt</Option>
-		        <Option>Mike</Option>
+		      	{this.state.userList.map(user => (
+
+
+		        <Option key = {user.id}>{user.first_name + ' ' + user.last_name}</Option>
+
+		      	))}
 		      </Select>
 		      <OptionList ref="OPTIONLIST"/>
 			</View>
