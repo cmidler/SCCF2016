@@ -49,19 +49,59 @@ var MainPage = React.createClass({
     }
   },
 
-  _okClicked (marker){
+  async okClicked (marker){
     console.log('OK clicked for ' + marker.id);
-    this.refs[marker.id].hideCallout();
+    
+    marker.state = 0
+    this.setState(marker);
+    fetch('http://128.237.221.45:8000/trash_pickup', {
+      method: 'POST',
+      body: JSON.stringify({
+        'user_token': '1',
+        'trash_locations': [{
+          'id':marker.id,
+          'timestamp': Date.now()
+        }
+        ]
+      })
+    
+    });
   },
 
-  _pickupClicked (marker){
+  async pickupClicked (marker){
     console.log('Pickup clicked for ' + marker.id);
-    this.refs[marker.id].hideCallout()
+    marker.state = 1
+    this.setState(marker);
+    fetch('http://128.237.221.45:8000/trash_drop', {
+      method: 'POST',
+      body: JSON.stringify({
+        'user_token': '1',
+        'trash_locations': [{
+          'id':marker.id,
+          'timestamp': Date.now()
+        }
+        ]
+      })
+    
+    });
   },
 
-  _emergencyClicked (marker){
+  async emergencyClicked (marker){
     console.log('Emergency clicked for ' + marker.id);
-    this.refs[marker.id].hideCallout()
+    marker.state = 2
+    this.setState(marker);
+    fetch('http://128.237.221.45:8000/trash_emergency', {
+      method: 'POST',
+      body: JSON.stringify({
+        'user_token': '1',
+        'trash_locations': [{
+          'id':marker.id,
+          'timestamp': Date.now()
+        }
+        ]
+      })
+    
+    });
   },
 
   //get all trash cans and parse into lat lons
@@ -71,8 +111,6 @@ var MainPage = React.createClass({
         .then((json) => {
 
           this.setState({trashCans:json.result});
-          console.log("TrashCans are: \n");
-          console.log(trashCans);
           return json.result;
       })
       .catch((error) => {
@@ -87,6 +125,129 @@ var MainPage = React.createClass({
       return yellowDot;
     else
       return redDot;
+  },
+
+  getOkButtonStyle(state){
+    if (state == 0)
+    {
+      return {
+        width: 120,
+        height: 40,
+        paddingHorizontal: 12,
+        paddingVertical: 10,
+        alignItems: 'center',
+        alignSelf: 'center',
+        marginHorizontal: 10,
+        marginTop: 10,
+        backgroundColor: '#00ff00',
+        borderColor: '#000000',
+        borderRadius: 7.5,
+        borderWidth: 5,
+        overflow: 'hidden',
+        color:'#000000',
+      }
+    }
+    else
+    {
+      return{
+        width: 120,
+        height: 40,
+        paddingHorizontal: 12,
+        paddingVertical: 10,
+        alignItems: 'center',
+        alignSelf: 'center',
+        marginHorizontal: 10,
+        marginTop: 10,
+        backgroundColor: '#00ff00',
+        borderColor: '#000000',
+        borderRadius: 7.5,
+        borderWidth: 2.5,
+        overflow: 'hidden',
+        color:'#000000',
+      }
+    }
+  },
+
+  getPickButtonStyle(state){
+    if (state == 1)
+    {
+      return {
+        width: 120,
+        height: 40,
+        paddingHorizontal: 12,
+        paddingVertical: 10,
+        alignItems: 'center',
+        alignSelf: 'center',
+        marginHorizontal: 10,
+        marginTop: 10,
+        backgroundColor: '#FFFF00',
+        borderColor: '#000000',
+        borderRadius: 7.5,
+        borderWidth: 5,
+        overflow: 'hidden',
+        color:'#000000',
+      }
+    }
+    else
+    {
+      return{
+        width: 120,
+        height: 40,
+        paddingHorizontal: 12,
+        paddingVertical: 10,
+        alignItems: 'center',
+        alignSelf: 'center',
+        marginHorizontal: 10,
+        marginTop: 10,
+        backgroundColor: '#FFFF00',
+        borderColor: '#000000',
+        borderRadius: 7.5,
+        borderWidth: 2.5,
+        overflow: 'hidden',
+        color:'#000000',
+      }
+    }
+  },
+
+  getEmergencyButtonStyle(state){
+    if (state == 2)
+    {
+      return {
+        width: 120,
+        height: 40,
+        paddingHorizontal: 12,
+        paddingVertical: 10,
+        alignItems: 'center',
+        alignSelf: 'center',
+        marginHorizontal: 10,
+        marginTop: 10,
+        backgroundColor: '#FF0000',
+        borderColor: '#000000',
+        borderRadius: 7.5,
+        borderWidth: 5,
+        overflow: 'hidden',
+        color:'#000000',
+      }
+    }
+    else
+    {
+      return{
+        width: 120,
+        height: 40,
+        paddingHorizontal: 12,
+        paddingVertical: 10,
+        alignItems: 'center',
+        alignSelf: 'center',
+        marginHorizontal: 10,
+        marginTop: 10,
+        backgroundColor: '#FF0000',
+        borderColor: '#000000',
+        borderRadius: 7.5,
+        borderWidth: 2.5,
+        overflow: 'hidden',
+        color:'#000000',
+      }
+    }
   },
 
   randomRegion() {
@@ -113,31 +274,31 @@ var MainPage = React.createClass({
               ref={marker.id}
               coordinate={{latitude:marker.lat, longitude:marker.lon}}
               key = {marker.id}
-              onSelect={()=>this.refs[marker.id].showCallout()}
               image = {this.getDot(marker)}
               calloutOffset={{ x: 0, y: 28 }}
               calloutAnchor={{ x: 0, y: 0.4 }}>
-              
+
 
               <MapView.Callout tooltip>
+                
                 <View style={styles.bubbleContainer}>
                   <View style={styles.bubble}>
                       <Text style={styles.bubbleTitleText}>Can # {marker.id}</Text>
                       <Button
-                        style={styles.okButton}
-                        onPress={()=>this._okClicked(marker)}
+                        style={this.getOkButtonStyle(marker.state)}
+                        onPress={(e)=>this.okClicked(marker)}
                       >
                         Ok
                       </Button>
                       <Button
-                        style={styles.pickButton}
-                        onPress={()=>this._pickupClicked(marker)}
+                        style={this.getPickButtonStyle(marker.state)}
+                        onPress={()=>this.pickupClicked(marker)}
                       >
                         Pick-up
                       </Button>  
                       <Button
-                        style={styles.emergencyButton}
-                        onPress={()=>this._emergencyClicked(marker)}
+                        style={this.getEmergencyButtonStyle(marker.state)}
+                        onPress={()=>this.emergencyClicked(marker)}
                       >
                         Emergency
                       </Button>          
@@ -189,54 +350,6 @@ var styles = StyleSheet.create({
     color: '#000000',
     alignSelf: 'center',
     fontSize: 20,
-  },
-  okButton: {
-    width: 120,
-    height: 40,
-    paddingHorizontal: 12,
-    paddingVertical: 10,
-    alignItems: 'center',
-    alignSelf: 'center',
-    marginHorizontal: 10,
-    marginTop: 10,
-    backgroundColor: '#00ff00',
-    borderColor: '#000000',
-    borderRadius: 7.5,
-    borderWidth: 2.5,
-    overflow: 'hidden',
-    color:'#000000',
-  },
-  pickButton: {
-    width: 120,
-    height: 40,
-    paddingHorizontal: 12,
-    paddingVertical: 10,
-    alignItems: 'center',
-    alignSelf: 'center',
-    marginHorizontal: 10,
-    marginTop: 10,
-    backgroundColor: '#FFFF00',
-    borderColor: '#000000',
-    borderRadius: 7.5,
-    borderWidth: 2.5,
-    overflow: 'hidden',
-    color:'#000000',
-  },
-  emergencyButton: {
-    width: 120,
-    height: 40,
-    paddingHorizontal: 12,
-    paddingVertical: 10,
-    alignItems: 'center',
-    alignSelf: 'center',
-    marginHorizontal: 10,
-    marginTop: 10,
-    backgroundColor: '#FF0000',
-    borderColor: '#000000',
-    borderRadius: 7.5,
-    borderWidth: 2.5,
-    overflow: 'hidden',
-    color:'#000000',
   },
   buttonContainer: {
     flexDirection: 'row',
