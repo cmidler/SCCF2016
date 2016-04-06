@@ -7,7 +7,7 @@ var {
   Dimensions,
   TouchableOpacity,
   TouchableHighlight,
-  Alert,  
+  Alert,
 } = React;
 
 var MapView = require('react-native-maps');
@@ -66,7 +66,7 @@ var MainPage = React.createClass({
 
   async okClicked (marker){
     console.log('OK clicked for ' + marker.id);
-    
+
     marker.state = 0
     this.setState(marker);
     fetch('http://128.237.221.45:8000/trash_pickup', {
@@ -79,7 +79,7 @@ var MainPage = React.createClass({
         }
         ]
       })
-    
+
     });
   },
 
@@ -97,7 +97,7 @@ var MainPage = React.createClass({
         }
         ]
       })
-    
+
     });
   },
 
@@ -115,7 +115,7 @@ var MainPage = React.createClass({
         }
         ]
       })
-    
+
     });
   },
 
@@ -282,46 +282,67 @@ var MainPage = React.createClass({
     //   }),
     // };
     return (
-<<<<<<< HEAD
-      <View style={styles.mainContainer}>
-        <NavigationBar
-          tintColor={'black'}
-          style={{marginBottom: 30}}
-          leftButton={
-              <LogoutIcon
-                  onPress={() => alert('logout')}/>}
-          centerButton1={
-              <SearchIcon
-                  onPress={() => alert('center 1')}/>}
-          centerButton2={
-              <ScanIcon
-                  onPress={() => alert('center 2')}/>}
-          centerButton3={
-              <MapInactiveIcon
-                  onPress={() => alert('center 3')}/>}
-          rightButton={
-              <ListInactiveIcon
-                  onPress={() => this.navigateItemListView()}
-              />}
-        />
-          <View style={styles.container}>
-            <MapView
-              ref="map"
-              mapType="terrain"
-              style={styles.map}
-              region={this.state.region}
-              onRegionChange={this.onRegionChange}
-            >
-            {this.state.trashCans.map(marker => (
-                <MapView.Marker
-                  coordinate={{latitude:marker.lat, longitude:marker.lon}}
-
-                  image = {this.getDot(marker)}/>
-              ))}
-
-            </MapView>
-          </View>
-=======
+// <<<<<<< HEAD
+//       <View style={styles.mainContainer}>
+//         <NavigationBar
+//           tintColor={'black'}
+//           style={{marginBottom: 30}}
+//           leftButton={
+//               <LogoutIcon
+//                   onPress={() => alert('logout')}/>}
+//           centerButton1={
+//               <SearchIcon
+//                   onPress={() => alert('center 1')}/>}
+//           centerButton2={
+//               <ScanIcon
+//                   onPress={() => alert('center 2')}/>}
+//           centerButton3={
+//               <MapInactiveIcon
+//                   onPress={() => alert('center 3')}/>}
+//           rightButton={
+//               <ListInactiveIcon
+//                   onPress={() => this.navigateItemListView()}
+//               />}
+//         />
+//           <View style={styles.container}>
+//             <MapView
+//               ref="map"
+//               mapType="terrain"
+//               style={styles.map}
+//               region={this.state.region}
+//               onRegionChange={this.onRegionChange}
+//             >
+//             {this.state.trashCans.map(marker => (
+//                 <MapView.Marker
+//                   coordinate={{latitude:marker.lat, longitude:marker.lon}}
+//
+//                   image = {this.getDot(marker)}/>
+//               ))}
+//
+//             </MapView>
+//           </View>
+// =======
+    <View style={styles.mainContainer}>
+    <NavigationBar
+      tintColor={'black'}
+      style={{marginBottom: 30}}
+      leftButton={
+          <LogoutIcon
+              onPress={() => alert('logout')}/>}
+      centerButton1={
+          <SearchIcon
+              onPress={() => alert('center 1')}/>}
+      centerButton2={
+          <ScanIcon
+              onPress={() => alert('center 2')}/>}
+      centerButton3={
+          <MapInactiveIcon
+              onPress={() => alert('center 3')}/>}
+      rightButton={
+          <ListInactiveIcon
+              onPress={() => this.navigateItemListView()}
+          />}
+    />
       <View style={styles.container}>
         <MapView
           ref="map"
@@ -341,7 +362,7 @@ var MainPage = React.createClass({
 
 
               <MapView.Callout tooltip>
-                
+
                 <View style={styles.bubbleContainer}>
                   <View style={styles.bubble}>
                       <Text style={styles.bubbleTitleText}>Can # {marker.id}</Text>
@@ -356,13 +377,13 @@ var MainPage = React.createClass({
                         onPress={()=>this.pickupClicked(marker)}
                       >
                         Pick-up
-                      </Button>  
+                      </Button>
                       <Button
                         style={this.getEmergencyButtonStyle(marker.state)}
                         onPress={()=>this.emergencyClicked(marker)}
                       >
                         Emergency
-                      </Button>          
+                      </Button>
                   </View>
                   <View style={styles.arrowBorder} />
                   <View style={styles.arrow} />
@@ -371,7 +392,7 @@ var MainPage = React.createClass({
             </MapView.Marker>
           ))}
         </MapView>
->>>>>>> 513e1e03820bf234833d40aa77a48357632bdf91
+      </View>
       </View>
     );
   },
