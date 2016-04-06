@@ -15,9 +15,9 @@ var NavBar = require('./NavBar')
 var { width, height } = Dimensions.get('window');
 var Button = require('react-native-button');
 var greenDot = require('../circle-green/ios/Icon-12@2x.png');
-var yellowDot = require('../circle-yellow/ios/Icon-12@2x.png');
-var redDot = require('../circle-red/ios/Icon-12@2x.png');
-var MapCallout = require('./MapCallout');
+var yellowDot = require('../circle-yellow/ios/yellow-Icon-12@2x.png');
+var redDot = require('../circle-red/ios/red-12@2x.png');
+
 
 const ASPECT_RATIO = width / height;
 const LATITUDE = 40.440624;
@@ -30,6 +30,7 @@ var MainPage = React.createClass({
   componentWillMount(){
     this._loadTrashCans();
   },
+
 
   getInitialState() {
     return {
@@ -261,6 +262,7 @@ var MainPage = React.createClass({
 
   render() {
     return (
+
       <View style={styles.container}>
         <MapView
           ref="map"
