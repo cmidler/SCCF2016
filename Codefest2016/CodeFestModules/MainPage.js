@@ -34,6 +34,8 @@ import SearchIcon from '../components/Search';
 import ScanIcon from '../components/Scan';
 import ListInactiveIcon from '../components/List';
 import MapInactiveIcon from '../components/Map';
+import ListActiveIcon from '../components/List-Active';
+import MapActiveIcon from '../components/Map-Active';
 
 var MainPage = React.createClass({
   mixins: [TimerMixin],
@@ -47,6 +49,10 @@ var MainPage = React.createClass({
  },
   componentWillMount(){
     this._loadTrashCans();
+  },
+
+  isMarkerVisibleOnMap(point_x, point_y){
+
   },
 
   getInitialState() {
@@ -282,53 +288,7 @@ var MainPage = React.createClass({
     }.bind(this), 250);
   },
   render() {
-    // const rightButtonConfig = {
-    //   title: 'Item List View',
-    //   handler: () => this.props.navigator.push({
-    //     component: ItemListView,
-    //   }),
-    // };
     return (
-// <<<<<<< HEAD
-//       <View style={styles.mainContainer}>
-//         <NavigationBar
-//           tintColor={'black'}
-//           style={{marginBottom: 30}}
-//           leftButton={
-//               <LogoutIcon
-//                   onPress={() => alert('logout')}/>}
-//           centerButton1={
-//               <SearchIcon
-//                   onPress={() => alert('center 1')}/>}
-//           centerButton2={
-//               <ScanIcon
-//                   onPress={() => alert('center 2')}/>}
-//           centerButton3={
-//               <MapInactiveIcon
-//                   onPress={() => alert('center 3')}/>}
-//           rightButton={
-//               <ListInactiveIcon
-//                   onPress={() => this.navigateItemListView()}
-//               />}
-//         />
-//           <View style={styles.container}>
-//             <MapView
-//               ref="map"
-//               mapType="terrain"
-//               style={styles.map}
-//               region={this.state.region}
-//               onRegionChange={this.onRegionChange}
-//             >
-//             {this.state.trashCans.map(marker => (
-//                 <MapView.Marker
-//                   coordinate={{latitude:marker.lat, longitude:marker.lon}}
-//
-//                   image = {this.getDot(marker)}/>
-//               ))}
-//
-//             </MapView>
-//           </View>
-// =======
     <View style={styles.mainContainer}>
     <NavigationBar
       tintColor={'black'}
@@ -343,7 +303,7 @@ var MainPage = React.createClass({
           <ScanIcon
               onPress={() => alert('center 2')}/>}
       centerButton3={
-          <MapInactiveIcon
+          <MapActiveIcon
               onPress={() => alert('center 3')}/>}
       rightButton={
           <ListInactiveIcon
@@ -360,13 +320,13 @@ var MainPage = React.createClass({
         >
         {this.state.trashCans.map(marker => (
             <MapView.Marker
+              // shouldComponentUpdate = {false}
               ref={marker.id}
               coordinate={{latitude:marker.lat, longitude:marker.lon}}
               key = {marker.id}
               image = {this.getDot(marker)}
               calloutOffset={{ x: 0, y: 28 }}
               calloutAnchor={{ x: 0, y: 0.4 }}>
-
 
               <MapView.Callout tooltip>
 

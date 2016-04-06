@@ -31,7 +31,8 @@ class App extends Component {
 
   	//get all trash cans and parse into lat lons
 	async _loadUserList() {
-		console.log("load user list is called");
+		console.log("load user list is calleddd");
+    // this.setState({userList:['stub']})
 	  return fetch('http://128.237.221.45:8000/listusers')
 	    .then((response) => response.json())
 	    .then((json) => {
