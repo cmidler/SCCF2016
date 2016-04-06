@@ -11,7 +11,7 @@ var {
 } = React;
 
 var MapView = require('react-native-maps');
-
+var NavBar = require('./NavBar')
 var { width, height } = Dimensions.get('window');
 var Button = require('react-native-button');
 var greenDot = require('../circle-green/ios/Icon-12@2x.png');
@@ -26,7 +26,7 @@ const LATITUDE_DELTA = 0.0025;
 const LONGITUDE_DELTA = LATITUDE_DELTA * ASPECT_RATIO;
 
 var MainPage = React.createClass({
-  
+
   componentWillMount(){
     this._loadTrashCans();
   },
@@ -69,7 +69,7 @@ var MainPage = React.createClass({
       return fetch('http://128.237.221.45:8000/listcans')
         .then((response) => response.json())
         .then((json) => {
-          
+
           this.setState({trashCans:json.result});
           console.log("TrashCans are: \n");
           console.log(trashCans);
@@ -155,14 +155,19 @@ var MainPage = React.createClass({
 });
 
 var styles = StyleSheet.create({
+  mainContainer: {
+      flex: 1
+  },
   container: {
-    position: 'absolute',
+    // position: 'absolute',
     top: 0,
     left: 0,
     right: 0,
     bottom: 0,
-    justifyContent: 'flex-end',
-    alignItems: 'center',
+    flex: 1,
+    flexDirection: 'row'
+    // justifyContent: 'flex-end',
+    // alignItems: 'center',
   },
   bubbleContainer: {
     flexDirection: 'column',
@@ -170,6 +175,7 @@ var styles = StyleSheet.create({
   },
   map: {
     position: 'absolute',
+    flex: 1,
     top: 0,
     left: 0,
     right: 0,
