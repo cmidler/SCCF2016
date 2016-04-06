@@ -57,7 +57,7 @@ var MainPage = React.createClass({
     fetch('http://128.237.221.45:8000/trash_pickup', {
       method: 'POST',
       body: JSON.stringify({
-        'user_token': '1',
+        'user_token': this.props.user.id,
         'trash_locations': [{
           'id':marker.id,
           'timestamp': Date.now()
@@ -75,7 +75,7 @@ var MainPage = React.createClass({
     fetch('http://128.237.221.45:8000/trash_drop', {
       method: 'POST',
       body: JSON.stringify({
-        'user_token': '1',
+        'user_token': this.props.user.id,
         'trash_locations': [{
           'id':marker.id,
           'timestamp': Date.now()
@@ -93,7 +93,7 @@ var MainPage = React.createClass({
     fetch('http://128.237.221.45:8000/trash_emergency', {
       method: 'POST',
       body: JSON.stringify({
-        'user_token': '1',
+        'user_token': this.props.user.id,
         'trash_locations': [{
           'id':marker.id,
           'timestamp': Date.now()
