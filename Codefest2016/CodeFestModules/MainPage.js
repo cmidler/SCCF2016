@@ -7,17 +7,21 @@ var {
   Dimensions,
   TouchableOpacity,
   TouchableHighlight,
-  Alert,  
+  Alert,
 } = React;
 
 var MapView = require('react-native-maps');
-var NavBar = require('./NavBar')
+// var NavBar = require('./NavBar');
+var NavigationBar = require('./react-native-navbar');
+var TrashPandaListView = require('./ItemListView');
+var TimerMixin = require('react-timer-mixin');
+
 var { width, height } = Dimensions.get('window');
 var Button = require('react-native-button');
 var greenDot = require('../circle-green/ios/Icon-12@2x.png');
 var yellowDot = require('../circle-yellow/ios/yellow-Icon-12@2x.png');
 var redDot = require('../circle-red/ios/red-12@2x.png');
-
+var Immutable = require('immutable');
 
 const ASPECT_RATIO = width / height;
 const LATITUDE = 40.440624;
@@ -25,8 +29,22 @@ const LONGITUDE = -79.995888;
 const LATITUDE_DELTA = 0.0025;
 const LONGITUDE_DELTA = LATITUDE_DELTA * ASPECT_RATIO;
 
-var MainPage = React.createClass({
+import LogoutIcon from '../components/Logout';
+import SearchIcon from '../components/Search';
+import ScanIcon from '../components/Scan';
+import ListInactiveIcon from '../components/List';
+import MapInactiveIcon from '../components/Map';
 
+var MainPage = React.createClass({
+  mixins: [TimerMixin],
+
+  navigateItemListView: function(){
+   this.props.navigator.push({
+     title: 'Item List View',
+     component: TrashPandaListView,
+     navigationBarHidden: true,
+   })
+ },
   componentWillMount(){
     this._loadTrashCans();
   },
@@ -40,7 +58,7 @@ var MainPage = React.createClass({
         latitudeDelta: LATITUDE_DELTA,
         longitudeDelta: LONGITUDE_DELTA,
       },
-      trashCans:[],
+      trashCans:Immutable.List(),
     };
   },
 
@@ -52,81 +70,232 @@ var MainPage = React.createClass({
 
   async okClicked (marker){
     console.log('OK clicked for ' + marker.id);
+    if (marker.get('state') == 0)
+      return;
+    newMarker = marker.set('state',0);
+    //this.state.trashCans = this.state.trashCans.set(marker,newMarker);
     
-    marker.state = 0
-    this.setState(marker);
-    fetch('http://128.237.221.45:8000/trash_pickup', {
+    var index = 0;
+    for(var i = 0; i<this.state.trashCans.size; i++)
+    {
+      //console.log(this.state.trashCans.get(i));
+      if(this.state.trashCans.get(i).get('id') == marker.get('id'))
+      {
+        index = i;
+        break;
+      }
+    }
+    var t = this.state.trashCans.set(index,newMarker);
+    this.setState({trashCans: t});
+    console.log(this.state.trashCans.get(index));
+    fetch('http://192.168.1.9:8000/trash_pickup', {
       method: 'POST',
       body: JSON.stringify({
         'user_token': this.props.user.id,
         'trash_locations': [{
-          'id':marker.id,
+          'id':marker.get('id'),
           'timestamp': Date.now()
         }
         ]
       })
-    
+
     });
   },
 
   async pickupClicked (marker){
     console.log('Pickup clicked for ' + marker.id);
-    marker.state = 1
-    this.setState(marker);
-    fetch('http://128.237.221.45:8000/trash_drop', {
+    if (marker.get('state') == 1)
+      return;
+    newMarker = marker.set('state',1);
+    var index = 0;
+    for(var i = 0; i<this.state.trashCans.size; i++)
+    {
+      //console.log(this.state.trashCans.get(i));
+      if(this.state.trashCans.get(i).get('id') == marker.get('id'))
+      {
+        index = i;
+        break;
+      }
+    }
+    var t = this.state.trashCans.set(index,newMarker);
+    this.setState({trashCans: t});
+    fetch('http://192.168.1.9:8000/trash_drop', {
       method: 'POST',
       body: JSON.stringify({
         'user_token': this.props.user.id,
         'trash_locations': [{
-          'id':marker.id,
+          'id':marker.get('id'),
           'timestamp': Date.now()
         }
         ]
       })
-    
+
     });
   },
 
   async emergencyClicked (marker){
     console.log('Emergency clicked for ' + marker.id);
-    marker.state = 2
-    this.setState(marker);
-    fetch('http://128.237.221.45:8000/trash_emergency', {
+    if (marker.get('state') == 2)
+      return;
+    newMarker = marker.set('state',2);
+    var index = 0;
+    for(var i = 0; i<this.state.trashCans.size; i++)
+    {
+      //console.log(this.state.trashCans.get(i));
+      if(this.state.trashCans.get(i).get('id') == marker.get('id'))
+      {
+        index = i;
+        break;
+      }
+    }
+    var t = this.state.trashCans.set(index,newMarker);
+    this.setState({trashCans: t});
+    fetch('http://192.168.1.9:8000/trash_emergency', {
       method: 'POST',
       body: JSON.stringify({
         'user_token': this.props.user.id,
         'trash_locations': [{
-          'id':marker.id,
+          'id':marker.get('id'),
           'timestamp': Date.now()
         }
         ]
       })
-    
+
     });
   },
 
   //get all trash cans and parse into lat lons
   async _loadTrashCans() {
-      return fetch('http://128.237.221.45:8000/listcans')
+      return fetch('http://192.168.1.9:8000/listcans')
         .then((response) => response.json())
         .then((json) => {
-
-          this.setState({trashCans:json.result});
-          return json.result;
+          var t = Immutable.List();
+          for(var i = 0; i<json.result.length; i++)
+          {
+            var can = Immutable.Map(json.result[i]);
+            t = t.push(can);
+          }
+          this.setState({trashCans:t});
+          
       })
       .catch((error) => {
-        return [];
+        console.log("Error getting trashcans");
       });
   },
 
+  shouldComponentUpdate: function(nextProps, nextState) {
+    return nextState !== this.state;
+  },
+
   getDot(marker){
-    if (marker.state == 0)
+    if (marker.get('state') == 0)
       return greenDot;
-    else if (marker.state ==1)
+    else if (marker.get('state') ==1)
       return yellowDot;
     else
       return redDot;
   },
+
+
+  
+
+  randomRegion() {
+    var { region } = this.state;
+    return {
+      ...this.state.region,
+      latitude: region.latitude + (Math.random() - 0.5) * region.latitudeDelta / 2,
+      longitude: region.longitude + (Math.random() - 0.5) * region.longitudeDelta / 2,
+    };
+  },
+  componentDidMount: function() {
+    this.setTimeout(function() {
+      this.setState({showMap: true});
+    }.bind(this), 250);
+  },
+  render() {
+    // const rightButtonConfig = {
+    //   title: 'Item List View',
+    //   handler: () => this.props.navigator.push({
+    //     component: ItemListView,
+    //   }),
+    // };
+    return (
+
+    <View style={styles.mainContainer}>
+    <NavigationBar
+      tintColor={'black'}
+      style={{marginBottom: 30}}
+      leftButton={
+          <LogoutIcon
+              onPress={() => alert('logout')}/>}
+      centerButton1={
+          <SearchIcon
+              onPress={() => alert('center 1')}/>}
+      centerButton2={
+          <ScanIcon
+              onPress={() => alert('center 2')}/>}
+      centerButton3={
+          <MapInactiveIcon
+              onPress={() => alert('center 3')}/>}
+      rightButton={
+          <ListInactiveIcon
+              onPress={() => this.navigateItemListView()}/>}/>
+      <View style={styles.container}>
+        <MapView
+          ref="map"
+          mapType="terrain"
+          style={styles.map}
+          region={this.state.region}
+          onRegionChange={this.onRegionChange}
+        >
+        {this.state.trashCans.map(marker => (
+            <MapView.Marker
+              coordinate={{latitude:marker.get('lat'), longitude:marker.get('lon')}}
+              key = {marker.get('id')}
+              image = {this.getDot(marker)}
+              calloutOffset={{ x: 0, y: 28 }}
+              calloutAnchor={{ x: 0, y: 0.4 }}>
+
+
+              <MapView.Callout tooltip>
+
+                <View style={styles.bubbleContainer}>
+                  <View style={styles.bubble}>
+                      <Text style={styles.bubbleTitleText}>Can # {marker.get('id')}</Text>
+                      <Button
+                        style={this.getOkButtonStyle(marker.get('state'))}
+                        //style={styles.okButton}
+                        onPress={(e)=>this.okClicked(marker)}
+                      >
+                        Ok
+                      </Button>
+                      <Button
+                        style={this.getPickButtonStyle(marker.get('state'))}
+                        //style={styles.pickButton}
+                        onPress={()=>this.pickupClicked(marker)}
+                      >
+                        Pick-up
+                      </Button>
+                      <Button
+                        style={this.getEmergencyButtonStyle(marker.get('state'))}
+                        //style={styles.emerButton}
+                        onPress={()=>this.emergencyClicked(marker)}
+                      >
+                        Emergency
+                      </Button>
+                  </View>
+                  <View style={styles.arrowBorder} />
+                  <View style={styles.arrow} />
+                </View>
+              </MapView.Callout>
+            </MapView.Marker>
+          ))}
+        </MapView>
+      </View>
+      </View>
+    );
+  },
+
 
   getOkButtonStyle(state){
     if (state == 0)
@@ -251,70 +420,8 @@ var MainPage = React.createClass({
     }
   },
 
-  randomRegion() {
-    var { region } = this.state;
-    return {
-      ...this.state.region,
-      latitude: region.latitude + (Math.random() - 0.5) * region.latitudeDelta / 2,
-      longitude: region.longitude + (Math.random() - 0.5) * region.longitudeDelta / 2,
-    };
-  },
-
-  render() {
-    return (
-
-      <View style={styles.container}>
-        <MapView
-          ref="map"
-          mapType="terrain"
-          style={styles.map}
-          region={this.state.region}
-          onRegionChange={this.onRegionChange}
-        >
-        {this.state.trashCans.map(marker => (
-            <MapView.Marker
-              ref={marker.id}
-              coordinate={{latitude:marker.lat, longitude:marker.lon}}
-              key = {marker.id}
-              image = {this.getDot(marker)}
-              calloutOffset={{ x: 0, y: 28 }}
-              calloutAnchor={{ x: 0, y: 0.4 }}>
 
 
-              <MapView.Callout tooltip>
-                
-                <View style={styles.bubbleContainer}>
-                  <View style={styles.bubble}>
-                      <Text style={styles.bubbleTitleText}>Can # {marker.id}</Text>
-                      <Button
-                        style={this.getOkButtonStyle(marker.state)}
-                        onPress={(e)=>this.okClicked(marker)}
-                      >
-                        Ok
-                      </Button>
-                      <Button
-                        style={this.getPickButtonStyle(marker.state)}
-                        onPress={()=>this.pickupClicked(marker)}
-                      >
-                        Pick-up
-                      </Button>  
-                      <Button
-                        style={this.getEmergencyButtonStyle(marker.state)}
-                        onPress={()=>this.emergencyClicked(marker)}
-                      >
-                        Emergency
-                      </Button>          
-                  </View>
-                  <View style={styles.arrowBorder} />
-                  <View style={styles.arrow} />
-                </View>
-              </MapView.Callout>
-            </MapView.Marker>
-          ))}
-        </MapView>
-      </View>
-    );
-  },
 });
 
 var styles = StyleSheet.create({
@@ -357,6 +464,54 @@ var styles = StyleSheet.create({
     flexDirection: 'row',
     marginVertical: 20,
     backgroundColor: 'transparent',
+  },
+  okButton:{
+    width: 120,
+    height: 40,
+    paddingHorizontal: 12,
+    paddingVertical: 10,
+    alignItems: 'center',
+    alignSelf: 'center',
+    marginHorizontal: 10,
+    marginTop: 10,
+    backgroundColor: '#00FF00',
+    borderColor: '#000000',
+    borderRadius: 7.5,
+    borderWidth: 5,
+    overflow: 'hidden',
+    color:'#000000',
+  },
+  pickButton:{
+    width: 120,
+    height: 40,
+    paddingHorizontal: 12,
+    paddingVertical: 10,
+    alignItems: 'center',
+    alignSelf: 'center',
+    marginHorizontal: 10,
+    marginTop: 10,
+    backgroundColor: '#FFFF00',
+    borderColor: '#000000',
+    borderRadius: 7.5,
+    borderWidth: 5,
+    overflow: 'hidden',
+    color:'#000000',
+  },
+  emerButton:{
+    width: 120,
+    height: 40,
+    paddingHorizontal: 12,
+    paddingVertical: 10,
+    alignItems: 'center',
+    alignSelf: 'center',
+    marginHorizontal: 10,
+    marginTop: 10,
+    backgroundColor: '#FF0000',
+    borderColor: '#000000',
+    borderRadius: 7.5,
+    borderWidth: 5,
+    overflow: 'hidden',
+    color:'#000000',
   },
   bubble: {
     width: 140,

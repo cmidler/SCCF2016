@@ -13,27 +13,27 @@ import DropDown, {
 } from 'react-native-selectme';
 
 var MainPage = require('./CodeFestModules/MainPage');
-var NavBar = require('./CodeFestModules/NavBar');
 
 class App extends Component {
-	
+
 	componentWillMount(){
     	this._loadUserList();
   	}
 
   	constructor(props) {
 	    super(props);
-	 
+
 	    this.state = {
 	      userList: []
 	    };
 
   	}
+  	
 
   	//get all trash cans and parse into lat lons
 	async _loadUserList() {
 		console.log("load user list is called");
-	  return fetch('http://128.237.221.45:8000/listusers')
+	  return fetch('http://192.168.1.9:8000/listusers')
 	    .then((response) => response.json())
 	    .then((json) => {
 
@@ -54,11 +54,11 @@ class App extends Component {
 	{
 
 		var user = null;
-		
+
 		for(var i = 0; i<this.state.userList.length; i++)
 		{
 			var name = this.state.userList[i].first_name + ' ' + this.state.userList[i].last_name;
-			
+
 			if (name == value)
 			{
 				user = this.state.userList[i];
@@ -69,7 +69,7 @@ class App extends Component {
 	  	this.props.navigator.replace({
 	        title: 'Main Page',
 	        component: MainPage,
-	        navigationBarHidden: false,
+	        navigationBarHidden: true,
 	        passProps: {'user': user}
 	    });
   	}
@@ -95,13 +95,11 @@ class App extends Component {
 
 
 		        <Option key = {user.id}>{user.first_name + ' ' + user.last_name}</Option>
-		 
+
 		      	))}
 		      </Select>
 		      <OptionList ref="OPTIONLIST"/>
 			</View>
-
-
 		);
 	}
 }
