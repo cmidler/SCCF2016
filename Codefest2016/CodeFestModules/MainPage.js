@@ -303,8 +303,8 @@ var MainPage = React.createClass({
           <ScanIcon
               onPress={() => alert('center 2')}/>}
       centerButton3={
-          <MapActiveIcon
-              onPress={() => alert('center 3')}/>}
+          <MapActiveIcon />}
+              // onPress={() => alert('center 3')}/>}
       rightButton={
           <ListInactiveIcon
               onPress={() => this.navigateItemListView()}
