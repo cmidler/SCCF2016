@@ -7,7 +7,7 @@ var {
 } = React;
 
 var App = require('./App');
-
+const server = '192.168.1.9';
 var Codefest2016 = React.createClass({
   render() {
     return(
@@ -16,7 +16,8 @@ var Codefest2016 = React.createClass({
         initialRoute={{
           title: "Select User",
           navigationBarHidden: true,
-          component:App
+          component:App,
+          passProps: {'server': server}
       }}/>
     );
     //return <App />

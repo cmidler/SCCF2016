@@ -17,6 +17,7 @@ var MainPage = require('./CodeFestModules/MainPage');
 class App extends Component {
 
 	componentWillMount(){
+		console.log(this.props.ipAddr);
     	this._loadUserList();
   	}
 
@@ -33,7 +34,8 @@ class App extends Component {
   	//get all trash cans and parse into lat lons
 	async _loadUserList() {
 		console.log("load user list is called");
-	  return fetch('http://192.168.1.9:8000/listusers')
+		var url = 'http://' + this.props.server +':8000/listusers';
+	  	return fetch(url)
 	    .then((response) => response.json())
 	    .then((json) => {
 
@@ -70,7 +72,7 @@ class App extends Component {
 	        title: 'Main Page',
 	        component: MainPage,
 	        navigationBarHidden: true,
-	        passProps: {'user': user}
+	        passProps: {'user': user, 'server':this.props.server}
 	    });
   	}
 

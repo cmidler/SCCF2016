@@ -34,6 +34,8 @@ import SearchIcon from '../components/Search';
 import ScanIcon from '../components/Scan';
 import ListInactiveIcon from '../components/List';
 import MapInactiveIcon from '../components/Map';
+import ListActiveIcon from '../components/List-Active';
+import MapActiveIcon from '../components/Map-Active';
 
 var MainPage = React.createClass({
   mixins: [TimerMixin],
@@ -47,6 +49,11 @@ var MainPage = React.createClass({
  },
   componentWillMount(){
     this._loadTrashCans();
+  },
+
+
+  isMarkerVisibleOnMap(point_x, point_y){
+
   },
 
 
@@ -69,7 +76,7 @@ var MainPage = React.createClass({
   },
 
   async okClicked (marker){
-    console.log('OK clicked for ' + marker.id);
+    
     if (marker.get('state') == 0)
       return;
     newMarker = marker.set('state',0);
@@ -87,8 +94,9 @@ var MainPage = React.createClass({
     }
     var t = this.state.trashCans.set(index,newMarker);
     this.setState({trashCans: t});
-    console.log(this.state.trashCans.get(index));
-    fetch('http://192.168.1.9:8000/trash_pickup', {
+    
+    var url = 'http://' + this.props.server + ':8000/trash_pickup'
+    fetch(url, {
       method: 'POST',
       body: JSON.stringify({
         'user_token': this.props.user.id,
@@ -119,7 +127,8 @@ var MainPage = React.createClass({
     }
     var t = this.state.trashCans.set(index,newMarker);
     this.setState({trashCans: t});
-    fetch('http://192.168.1.9:8000/trash_drop', {
+    var url = 'http://' + this.props.server + ':8000/trash_drop'
+    fetch(url, {
       method: 'POST',
       body: JSON.stringify({
         'user_token': this.props.user.id,
@@ -150,7 +159,8 @@ var MainPage = React.createClass({
     }
     var t = this.state.trashCans.set(index,newMarker);
     this.setState({trashCans: t});
-    fetch('http://192.168.1.9:8000/trash_emergency', {
+    var url = 'http://' + this.props.server + ':8000/trash_emergency'
+    fetch(url, {
       method: 'POST',
       body: JSON.stringify({
         'user_token': this.props.user.id,
@@ -166,7 +176,8 @@ var MainPage = React.createClass({
 
   //get all trash cans and parse into lat lons
   async _loadTrashCans() {
-      return fetch('http://192.168.1.9:8000/listcans')
+      var url = 'http://' + this.props.server + ':8000/listcans'
+      return fetch(url)
         .then((response) => response.json())
         .then((json) => {
           var t = Immutable.List();
@@ -420,13 +431,11 @@ var MainPage = React.createClass({
     }
   },
 
-
-
 });
 
 var styles = StyleSheet.create({
   mainContainer: {
-      flex: 1
+      flex: 1,
   },
   container: {
     // position: 'absolute',
