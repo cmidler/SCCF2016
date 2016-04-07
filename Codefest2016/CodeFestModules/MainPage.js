@@ -8,6 +8,7 @@ var {
   TouchableOpacity,
   TouchableHighlight,
   Alert,
+  TextInput,
 } = React;
 
 var MapView = require('react-native-maps');
@@ -39,6 +40,13 @@ import MapActiveIcon from '../components/Map-Active';
 
 var MainPage = React.createClass({
   mixins: [TimerMixin],
+
+  searchNumber : function(){
+    console.log('\n\n\narrived\n\n\n');
+    return(
+      <TextInput style={styles.searchInputStyle} />
+    )
+  },
 
   navigateItemListView: function(){
    this.props.navigator.push({
@@ -224,14 +232,7 @@ var MainPage = React.createClass({
     }.bind(this), 250);
   },
   render() {
-    // const rightButtonConfig = {
-    //   title: 'Item List View',
-    //   handler: () => this.props.navigator.push({
-    //     component: ItemListView,
-    //   }),
-    // };
     return (
-
     <View style={styles.mainContainer}>
     <NavigationBar
       tintColor={'black'}
@@ -241,13 +242,14 @@ var MainPage = React.createClass({
               onPress={() => alert('logout')}/>}
       centerButton1={
           <SearchIcon
-              onPress={() => alert('center 1')}/>}
+              // onPress={() => alert('center 1')}/>}
+              onPress={() => this.searchNumber()}/>}
       centerButton2={
           <ScanIcon
               onPress={() => alert('center 2')}/>}
       centerButton3={
-          <MapInactiveIcon
-              onPress={() => alert('center 3')}/>}
+          <MapActiveIcon />}
+              // onPress={() => alert('center 3')}/>}
       rightButton={
           <ListInactiveIcon
               onPress={() => this.navigateItemListView()}/>}/>
@@ -430,7 +432,6 @@ var MainPage = React.createClass({
       }
     }
   },
-
 });
 
 var styles = StyleSheet.create({
@@ -549,6 +550,10 @@ var styles = StyleSheet.create({
     alignSelf: 'center',
     marginTop: -0.5,
   },
+  searchInputStyle: {
+    height: 100,
+    width: 100
+  }
 });
 
 module.exports = MainPage;

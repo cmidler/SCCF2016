@@ -14,7 +14,7 @@ export default class ScanIcon extends Component {
         <Image
           source={require('../images/Icon-72-scan.png')}
           style={[{ width: 30, height: 30, marginTop: 15 }, this.props.style]}/>
-         <Text style={{fontSize: 12, marginTop: 3, color: 'white', textAlign: 'center'}}>Scan</Text>
+         <Text style={{fontSize: 12, fontWeight: 'bold', marginTop: 3, color: 'white', textAlign: 'center'}}>Scan</Text>
       </TouchableOpacity>
     );
   }

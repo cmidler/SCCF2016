@@ -13,7 +13,7 @@ export default class ListInactiveIcon extends Component {
         <Image
           source={require('../images/Icon-72-list-inactive.png')}
           style={[{ width: 30, height: 30, marginLeft: 23, marginTop: 15, backgroundColor: 'grey' }, this.props.style]}/>
-         <Text style={{fontSize: 12, marginTop: 3, textAlign: 'center'}}>List View</Text>
+         <Text style={{fontSize: 12, fontWeight: 'bold',marginTop: 3, textAlign: 'center'}}>List View</Text>
       </TouchableOpacity>
     );
   }
