@@ -1,14 +1,22 @@
 import React from 'react-native';
 const {
   Component,
+  AppRegistry,
   Image,
   TouchableOpacity,
   Text
 } = React;
 
+const DropDown = require('react-native-dropdown');
+const {
+  Select,
+  Option,
+  OptionList,
+  UpdatePosition
+} = DropDown;
+
 export default class SearchIcon extends Component {
   render() {
-    const logoutIcon = '../images/Icon-72.png';
     return (
       <TouchableOpacity onPress={this.props.onPress}>
         <Image

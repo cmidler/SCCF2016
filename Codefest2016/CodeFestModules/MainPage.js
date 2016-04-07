@@ -15,6 +15,7 @@ var MapView = require('react-native-maps');
 // var NavBar = require('./NavBar');
 var NavigationBar = require('./react-native-navbar');
 var TrashPandaListView = require('./ItemListView');
+var TrashPandaSearchView = require('./TestSearch');
 var TimerMixin = require('react-timer-mixin');
 
 var { width, height } = Dimensions.get('window');
@@ -47,7 +48,13 @@ var MainPage = React.createClass({
       <TextInput style={styles.searchInputStyle} />
     )
   },
-
+  navigateSearchView: function(){
+    this.props.navigator.push({
+      title: 'Search View',
+      component:TrashPandaSearchView,
+      navigationBarHidden: true,
+    })
+  },
   navigateItemListView: function(){
    this.props.navigator.push({
      title: 'Item List View',
@@ -307,7 +314,7 @@ var MainPage = React.createClass({
       centerButton1={
           <SearchIcon
               // onPress={() => alert('center 1')}/>}
-              onPress={() => this.searchNumber()}/>}
+              onPress={() => this.navigateSearchView()}/>}
       centerButton2={
           <ScanIcon
               onPress={() => alert('center 2')}/>}
@@ -320,6 +327,12 @@ var MainPage = React.createClass({
           />}
     />
       <View style={styles.container}>
+      <TextInput
+      style={{height: 40, borderColor: 'gray', borderWidth: 1}}
+      onChangeText={(text) => this.setState({text})}
+      value={this.state.text}
+    />
+
         <MapView
           ref="map"
           mapType="terrain"
