@@ -87,52 +87,22 @@ var TrashPandaListView = React.createClass({
     };
   },
 
-  renderHeader(){
-    return(
-      <View style={styles.headerStyle}>
-        <Text style={styles.headerTextStyle}>Status        ID            Zone                Last Pick-up</Text>
-      </View>
-    )
+  sortListByStatus: function(rowData){
+    console.log(rowData);
   },
-  // renderContent(rowData, sectionId, rowId) {
-  //     // temp string manipulation
-  //     var statusTag = rowData.split('\t')[0];
-  //     rowData = rowData.replace("G\t\t","");
-  //     rowData = rowData.replace("Y\t\t","");
-  //     rowData = rowData.replace("R\t\t","");
-  //     console.log('\n\n\nTEST\n\n\n');
-  //     console.log(rowData);
-  //     if (rowId % 2) {
-  //       if (statusTag == "R"){
-  //           return (
-  //             <View style={styles.contentStyleAlt}>
-  //                 <Image style={styles.statusImageStyle} source={require('../images/Red-Icon-Small-50.png')}/>
-  //                 // <Text style={styles.contentTextStyle}>{rowData}</Text>
-  //             </View>
-  //           );
-  //       } else if (statusTag =="Y") {
-  //         return (
-  //           <View style={styles.contentStyleAlt}>
-  //               <Image style={styles.statusImageStyle} source={require('../images/yellow-Icon-Small-50.png')} />
-  //               <Text style={styles.contentTextStyle}>{rowData}</Text>
-  //           </View>
-  //         );
-  //       } else {
-  //         return (
-  //           <View style={styles.contentStyleAlt}>
-  //               <Image style={styles.statusImageStyle} source={require('../images/Green-Icon-Small-50.png')} />
-  //               <Text style={styles.contentTextStyle}>{rowData}</Text>
-  //           </View>
-  //         );
-  //       };
-  //     } else {
-  //         return (
-  //             <View style={styles.contentStyle}>
-  //                 <Text style={styles.contentTextStyle}>{rowData}</Text>
-  //             </View>
-  //         );
-  //     }
-  // },
+
+  sortListById: function(rowData){
+
+  },
+
+  sortListByZone: function(rowData){
+
+  },
+
+  sortListByPickkup: function(rowData){
+
+  },
+
 
   _renderRow: function(rowData, sectionId, rowId) {
     var statusTag = rowData.split('\t')[0];
@@ -217,6 +187,7 @@ var TrashPandaListView = React.createClass({
   render: function() {
     return (
       <View style={styles.mainContainer}>
+
         <NavigationBar
           tintColor={'black'}
           style={{marginBottom: 30}}
@@ -237,10 +208,27 @@ var TrashPandaListView = React.createClass({
                   // onPress={() => this.navigateItemListView()}
               />}
         />
+        <View style={styles.headerButtonRowStyle}>
+          <Button style={styles.headerButtonStyleStatus} textStyle={styles.headerButtonTextStyle}
+            onPress={() => this.sortListByStatus()}>
+            Status
+          </Button>
+          <Button style={styles.headerButtonStyleId} textStyle={styles.headerButtonTextStyle}
+            onPress={() => alert('hi')}>
+            ID
+          </Button>
+          <Button style={styles.headerButtonStyleZone} textStyle={styles.headerButtonTextStyle}
+            onPress={() => alert('hi')}>
+            Zone
+          </Button>
+          <Button style={styles.headerButtonStylePickup} textStyle={styles.headerButtonTextStyle}
+            onPress={() => alert('hi')}>
+            Last Pick-up
+          </Button>
+        </View>
         <View>
         <ListView
           style={styles.listContainer}
-          renderHeader={this.renderHeader}
           dataSource={this.state.dataSource}
           renderRow={this._renderRow}
           // renderRow={this.renderContent}
@@ -343,6 +331,46 @@ var styles = StyleSheet.create({
       // flexWrap : 'wrap',
       // alignItems: 'flex-start',
       // textAlign: 'center'
+  },
+
+  headerButtonRowStyle:{
+    flexDirection : 'row',
+    backgroundColor: '#003366',
+    height: 45
+  },
+
+  headerButtonStyleStatus:{
+      width : 60,
+      height : 45,
+      borderRadius: 0,
+      borderColor: '#003366'
+  },
+  headerButtonStyleId:{
+      marginLeft: 15,
+      width : 40,
+      height : 45,
+      borderRadius: 0,
+      borderColor: '#003366'
+  },
+  headerButtonStyleZone:{
+      marginLeft: 24,
+      width : 50,
+      height : 45,
+      borderRadius: 0,
+      borderColor: '#003366'
+  },
+  headerButtonStylePickup:{
+      marginLeft: 34,
+      width : 140,
+      height : 45,
+      borderRadius: 0,
+      borderColor: '#003366'
+  },
+
+  headerButtonTextStyle:{
+      fontWeight: 'bold',
+      fontSize: 16,
+      color: 'white'
   }
 })
 module.exports = TrashPandaListView;
