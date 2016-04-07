@@ -17,7 +17,7 @@ var MainPage = require('./CodeFestModules/MainPage');
 class App extends Component {
 
 	componentWillMount(){
-		console.log(this.props.ipAddr);
+		console.log("Server is " +this.props.server);
     	this._loadUserList();
   	}
 

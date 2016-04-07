@@ -3,6 +3,7 @@ var {
   StyleSheet,
   View,
   Text,
+  Dimensions,
 } = React;
 var Immutable = require('immutable');
 var MapView = require('react-native-maps');
@@ -10,16 +11,32 @@ var greenDot = require('../circle-green/ios/Icon-12@2x.png');
 var yellowDot = require('../circle-yellow/ios/yellow-Icon-12@2x.png');
 var redDot = require('../circle-red/ios/red-12@2x.png');
 var Button = require('react-native-button');
+var { width, height } = Dimensions.get('window');
+
+const ASPECT_RATIO = width / height;
+const LATITUDE = 40.440624;
+const LONGITUDE = -79.995888;
+const LATITUDE_DELTA = 0.0025;
+const LONGITUDE_DELTA = LATITUDE_DELTA * ASPECT_RATIO;
+
+
+
 var CustomMarkers = React.createClass({
 
 
   componentWillMount(){
-    console.log(this.props);
+    //console.log(this.props);
     this._loadTrashCans();
   },
 
   getInitialState() {
     return {
+      region: {
+        latitude: LATITUDE,
+        longitude: LONGITUDE,
+        latitudeDelta: LATITUDE_DELTA,
+        longitudeDelta: LONGITUDE_DELTA,
+      },
       trashCans:Immutable.List(),
     };
   },
@@ -152,51 +169,61 @@ var CustomMarkers = React.createClass({
       });
   },
 
+
+
   render() {
+    
     return (
-      
-      {this.state.trashCans.map(marker => (
-            <MapView.Marker
-              coordinate={{latitude:marker.get('lat'), longitude:marker.get('lon')}}
-              key = {marker.get('id')}
-              image = {this.getDot(marker)}
-              calloutOffset={{ x: 0, y: 28 }}
-              calloutAnchor={{ x: 0, y: 0.4 }}>
+      <MapView
+          ref="map"
+          mapType="terrain"
+          style={styles.map}
+          region={this.state.region}
+        >
+        {this.state.trashCans.map(marker => (
+              <MapView.Marker
+                coordinate={{latitude:marker.get('lat'), longitude:marker.get('lon')}}
+                key = {marker.get('id')}
+                image = {this.getDot(marker)}
+                calloutOffset={{ x: 0, y: 28 }}
+                calloutAnchor={{ x: 0, y: 0.4 }}>
 
 
-              <MapView.Callout tooltip>
+                <MapView.Callout tooltip>
 
-                <View style={styles.bubbleContainer}>
-                  <View style={styles.bubble}>
-                      <Text style={styles.bubbleTitleText}>Can # {marker.get('id')}</Text>
-                      <Button
-                        style={this.getOkButtonStyle(marker.get('state'))}
-                        //style={styles.okButton}
-                        onPress={(e)=>this.okClicked(marker)}
-                      >
-                        Ok
-                      </Button>
-                      <Button
-                        style={this.getPickButtonStyle(marker.get('state'))}
-                        //style={styles.pickButton}
-                        onPress={()=>this.pickupClicked(marker)}
-                      >
-                        Pick-up
-                      </Button>
-                      <Button
-                        style={this.getEmergencyButtonStyle(marker.get('state'))}
-                        //style={styles.emerButton}
-                        onPress={()=>this.emergencyClicked(marker)}
-                      >
-                        Emergency
-                      </Button>
+                  <View style={styles.bubbleContainer}>
+                    <View style={styles.bubble}>
+                        <Text style={styles.bubbleTitleText}>Can # {marker.get('id')}</Text>
+                        <Button
+                          style={this.getOkButtonStyle(marker.get('state'))}
+                          //style={styles.okButton}
+                          onPress={(e)=>this.okClicked(marker)}
+                        >
+                          Ok
+                        </Button>
+                        <Button
+                          style={this.getPickButtonStyle(marker.get('state'))}
+                          //style={styles.pickButton}
+                          onPress={()=>this.pickupClicked(marker)}
+                        >
+                          Pick-up
+                        </Button>
+                        <Button
+                          style={this.getEmergencyButtonStyle(marker.get('state'))}
+                          //style={styles.emerButton}
+                          onPress={()=>this.emergencyClicked(marker)}
+                        >
+                          Emergency
+                        </Button>
+                    </View>
+                    <View style={styles.arrowBorder} />
+                    <View style={styles.arrow} />
                   </View>
-                  <View style={styles.arrowBorder} />
-                  <View style={styles.arrow} />
-                </View>
-              </MapView.Callout>
-            </MapView.Marker>
-          ))}
+                </MapView.Callout>
+              </MapView.Marker>
+            ))}
+        </MapView>
+    
     );
   },
 
