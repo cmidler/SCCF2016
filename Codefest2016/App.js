@@ -33,7 +33,8 @@ class App extends Component {
 
   	//get all trash cans and parse into lat lons
 	async _loadUserList() {
-		console.log("load user list is called");
+		// console.log("load user list is called");
+    // this.setState({userList:['hi']});
 		var url = 'http://' + this.props.server +':8000/listusers';
 	  	return fetch(url)
 	    .then((response) => response.json())
