@@ -161,7 +161,7 @@ var TrashPandaListView = React.createClass({
 
 
     var content = (
-      <View style={styles.accordingStyle}>
+      <View style={styles.accordionStyle}>
         <Button style={styles.okButtonStyle} textStyle={styles.buttonTextStyle}>
           Ok
         </Button>
@@ -250,8 +250,11 @@ var styles = StyleSheet.create({
     marginTop: -20,
   },
 
-  accordingStyle:{
+  accordionStyle:{
     backgroundColor: '#003366',
+    flexDirection: 'row',
+    // marginTop: 100
+    // marginTop: 20
   },
 
   headerStyle:{
@@ -292,23 +295,35 @@ var styles = StyleSheet.create({
   okButtonStyle:{
     backgroundColor: '#00ff00',
     flexDirection: 'column',
-    marginTop: 25,
-    marginRight: 20,
-    marginLeft: 20
+    width: 110,
+    height: 40,
+    marginRight: 16,
+    marginTop: 10,
+    marginLeft: 7
+    // marginTop: 25,
+    // marginRight: 20,
+    // marginLeft: 20
   },
 
   pickupButtonStyle:{
     backgroundColor: '#ffcc00',
     flexDirection: 'column',
-    marginRight: 20,
-    marginLeft: 20
+    width: 110,
+    height: 40,
+    marginRight: 16,
+    marginTop: 10
+    // marginRight: 20,
+    // marginLeft: 20
   },
 
   emergencyButtonStyle:{
     backgroundColor: '#cc0000',
-    marginBottom: 25,
-    marginRight: 20,
-    marginLeft: 20
+    width: 110,
+    height: 40,
+    marginTop: 10
+    // marginBottom: 25,
+    // marginRight: 20,
+    // marginLeft: 20
   },
 
   buttonTextStyle: {
