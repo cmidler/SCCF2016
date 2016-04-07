@@ -41,6 +41,12 @@ var CustomMarkers = React.createClass({
     };
   },
 
+  onRegionChange(region) {
+    if (this.isMounted()) {
+      this.setState({ region });
+    }
+  },
+
   async okClicked (marker){
     
     if (marker.get('state') == 0)
@@ -179,6 +185,7 @@ var CustomMarkers = React.createClass({
           mapType="terrain"
           style={styles.map}
           region={this.state.region}
+          onRegionChange={this.onRegionChange}
         >
         {this.state.trashCans.map(marker => (
               <MapView.Marker
