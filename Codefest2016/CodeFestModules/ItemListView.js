@@ -1,9 +1,9 @@
 'use strict';
 
 var React = require('react-native');
-// var NavBar = require('./NavBar');
 var NavigationBar = require('./react-native-navbar');
 var MapView = require('./MainPage');
+var Accordion = require('react-native-accordion');
 
 var {
     AppRegistry,
@@ -20,6 +20,13 @@ import ScanIcon from '../components/Scan';
 import ListInactiveIcon from '../components/List';
 import MapInactiveIcon from '../components/Map';
 import ListActiveIcon from '../components/List-Active';
+import Button from 'apsl-react-native-button';
+
+var expandMenu = (
+  <View>
+    <Text>This content is hidden in the accordion</Text>
+  </View>
+);
 
 var TrashPandaListView = React.createClass({
   navigateMapView: function(){
@@ -101,6 +108,45 @@ var TrashPandaListView = React.createClass({
           );
       }
   },
+
+  _renderRow: function(rowData, sectionId, rowId) {
+    if (rowId %2){
+      var header = (
+        <View style={styles.contentStyle}>
+          <Text style={styles.contentTextStyle}>{rowData}</Text>
+        </View>
+    )} else {
+      var header = (
+        <View style={styles.contentStyleAlt}>
+          <Text style={styles.contentTextStyle}>{rowData}</Text>
+        </View>)
+    };
+
+
+    var content = (
+      <View style={styles.accordingStyle}>
+        <Button style={styles.okButtonStyle} textStyle={styles.buttonTextStyle}>
+          Ok
+        </Button>
+        <Button style={styles.pickupButtonStyle} textStyle={styles.buttonTextStyle}>
+          Pick-up
+        </Button>
+        <Button style={styles.emergencyButtonStyle} textStyle={styles.buttonTextStyle}>
+          Emergency
+        </Button>
+      </View>
+    );
+
+    return (
+      <Accordion
+        header={header}
+        content={content}
+        easing="easeOutCubic"
+        underlayColor='white'
+      />
+    );
+  },
+
   render: function() {
     return (
       <View style={styles.mainContainer}>
@@ -129,7 +175,8 @@ var TrashPandaListView = React.createClass({
           style={styles.listContainer}
           renderHeader={this.renderHeader}
           dataSource={this.state.dataSource}
-          renderRow={this.renderContent}
+          renderRow={this._renderRow}
+          // renderRow={this.renderContent}
         />
         </View>
       </View>
@@ -138,18 +185,24 @@ var TrashPandaListView = React.createClass({
 })
 
 var styles = StyleSheet.create({
+
   mainContainer: {
     flex: 1
   },
+
   listContainer: {
     top:0,
     marginTop: -20,
-    // flex: 1,
-    // flexDirection: 'row'
   },
+
+  accordingStyle:{
+    backgroundColor: '#003366',
+  },
+
   headerStyle:{
     backgroundColor: '#003366',
   },
+
   headerTextStyle:{
     fontSize: 20,
     fontWeight: 'bold',
@@ -158,18 +211,49 @@ var styles = StyleSheet.create({
     marginTop: 10,
     marginBottom: 10
   },
+
   contentStyle:{
     paddingVertical: 12,
     borderTopColor: 'black'
   },
+
   contentStyleAlt:{
     paddingVertical: 12,
     borderTopColor: 'black',
     backgroundColor: 'lightgrey'
   },
+
   contentTextStyle:{
     marginLeft: 5,
     fontWeight: 'bold'
+  },
+
+  okButtonStyle:{
+    backgroundColor: '#00ff00',
+    flexDirection: 'column',
+    marginTop: 15,
+  },
+
+  pickupButtonStyle:{
+    backgroundColor: '#ffcc00',
+    flexDirection: 'column'
+  },
+
+  emergencyButtonStyle:{
+    backgroundColor: '#cc0000',
+    marginBottom: 15
+  },
+
+  buttonTextStyle: {
+    fontWeight: 'bold',
+    fontSize: 16,
+    color: 'black'
+  },
+
+  emergencyButtonTextStyle :{
+    fontWeight: 'bold',
+    fontSize : 16,
+    color: 'white'
   }
 })
 module.exports = TrashPandaListView;
