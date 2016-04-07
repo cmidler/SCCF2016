@@ -15,6 +15,7 @@ var MapView = require('react-native-maps');
 // var NavBar = require('./NavBar');
 var NavigationBar = require('./react-native-navbar');
 var TrashPandaListView = require('./ItemListView');
+var TrashPandaSearchView = require('./TestSearch');
 var TimerMixin = require('react-timer-mixin');
 
 var { width, height } = Dimensions.get('window');
@@ -47,7 +48,13 @@ var MainPage = React.createClass({
       <TextInput style={styles.searchInputStyle} />
     )
   },
-
+  navigateSearchView: function(){
+    this.props.navigator.push({
+      title: 'Search View',
+      component:TrashPandaSearchView,
+      navigationBarHidden: true,
+    })
+  },
   navigateItemListView: function(){
    this.props.navigator.push({
      title: 'Item List View',
@@ -84,12 +91,12 @@ var MainPage = React.createClass({
   },
 
   async okClicked (marker){
-    
+
     if (marker.get('state') == 0)
       return;
     newMarker = marker.set('state',0);
     //this.state.trashCans = this.state.trashCans.set(marker,newMarker);
-    
+
     var index = 0;
     for(var i = 0; i<this.state.trashCans.size; i++)
     {
@@ -102,7 +109,7 @@ var MainPage = React.createClass({
     }
     var t = this.state.trashCans.set(index,newMarker);
     this.setState({trashCans: t});
-    
+
     var url = 'http://' + this.props.server + ':8000/trash_pickup'
     fetch(url, {
       method: 'POST',
@@ -195,7 +202,7 @@ var MainPage = React.createClass({
             t = t.push(can);
           }
           this.setState({trashCans:t});
-          
+
       })
       .catch((error) => {
         console.log("Error getting trashcans");
@@ -216,7 +223,7 @@ var MainPage = React.createClass({
   },
 
 
-  
+
 
   randomRegion() {
     var { region } = this.state;
@@ -431,6 +438,103 @@ var MainPage = React.createClass({
         color:'#000000',
       }
     }
+  },
+
+  randomRegion() {
+    var { region } = this.state;
+    return {
+      ...this.state.region,
+      latitude: region.latitude + (Math.random() - 0.5) * region.latitudeDelta / 2,
+      longitude: region.longitude + (Math.random() - 0.5) * region.longitudeDelta / 2,
+    };
+  },
+  componentDidMount: function() {
+    this.setTimeout(function() {
+      this.setState({showMap: true});
+    }.bind(this), 250);
+  },
+  render() {
+    return (
+    <View style={styles.mainContainer}>
+    <NavigationBar
+      tintColor={'black'}
+      style={{marginBottom: 30}}
+      leftButton={
+          <LogoutIcon
+              onPress={() => alert('logout')}/>}
+      centerButton1={
+          <SearchIcon
+              // onPress={() => alert('center 1')}/>}
+              onPress={() => this.navigateSearchView()}/>}
+      centerButton2={
+          <ScanIcon
+              onPress={() => alert('center 2')}/>}
+      centerButton3={
+          <MapActiveIcon />}
+              // onPress={() => alert('center 3')}/>}
+      rightButton={
+          <ListInactiveIcon
+              onPress={() => this.navigateItemListView()}
+          />}
+    />
+      <View style={styles.container}>
+      <TextInput
+      style={{height: 40, borderColor: 'gray', borderWidth: 1}}
+      onChangeText={(text) => this.setState({text})}
+      value={this.state.text}
+    />
+
+        <MapView
+          ref="map"
+          mapType="terrain"
+          style={styles.map}
+          region={this.state.region}
+          onRegionChange={this.onRegionChange}
+        >
+        {this.state.trashCans.map(marker => (
+            <MapView.Marker
+              // shouldComponentUpdate = {false}
+              ref={marker.id}
+              coordinate={{latitude:marker.lat, longitude:marker.lon}}
+              key = {marker.id}
+              image = {this.getDot(marker)}
+              calloutOffset={{ x: 0, y: 28 }}
+              calloutAnchor={{ x: 0, y: 0.4 }}>
+
+              <MapView.Callout tooltip>
+
+                <View style={styles.bubbleContainer}>
+                  <View style={styles.bubble}>
+                      <Text style={styles.bubbleTitleText}>Can # {marker.id}</Text>
+                      <Button
+                        style={this.getOkButtonStyle(marker.state)}
+                        onPress={(e)=>this.okClicked(marker)}
+                      >
+                        Ok
+                      </Button>
+                      <Button
+                        style={this.getPickButtonStyle(marker.state)}
+                        onPress={()=>this.pickupClicked(marker)}
+                      >
+                        Pick-up
+                      </Button>
+                      <Button
+                        style={this.getEmergencyButtonStyle(marker.state)}
+                        onPress={()=>this.emergencyClicked(marker)}
+                      >
+                        Emergency
+                      </Button>
+                  </View>
+                  <View style={styles.arrowBorder} />
+                  <View style={styles.arrow} />
+                </View>
+              </MapView.Callout>
+            </MapView.Marker>
+          ))}
+        </MapView>
+      </View>
+      </View>
+    );
   },
 });
 

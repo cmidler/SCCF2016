@@ -29,7 +29,7 @@ class App extends Component {
 	    };
 
   	}
-  	
+
 
   	//get all trash cans and parse into lat lons
 	async _loadUserList() {
