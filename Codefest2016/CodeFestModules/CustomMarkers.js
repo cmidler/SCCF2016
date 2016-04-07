@@ -1,86 +1,27 @@
 var React = require('react-native');
 var {
   StyleSheet,
-  PropTypes,
   View,
   Text,
-  Dimensions,
-  TouchableOpacity,
-  TouchableHighlight,
-  Alert,
-  TextInput,
 } = React;
-
+var Immutable = require('immutable');
 var MapView = require('react-native-maps');
-// var NavBar = require('./NavBar');
-var NavigationBar = require('./react-native-navbar');
-var TrashPandaListView = require('./ItemListView');
-var TimerMixin = require('react-timer-mixin');
-
-var { width, height } = Dimensions.get('window');
-var Button = require('react-native-button');
 var greenDot = require('../circle-green/ios/Icon-12@2x.png');
 var yellowDot = require('../circle-yellow/ios/yellow-Icon-12@2x.png');
 var redDot = require('../circle-red/ios/red-12@2x.png');
-var Immutable = require('immutable');
+var Button = require('react-native-button');
+var CustomMarkers = React.createClass({
 
-const ASPECT_RATIO = width / height;
-const LATITUDE = 40.440624;
-const LONGITUDE = -79.995888;
-const LATITUDE_DELTA = 0.0025;
-const LONGITUDE_DELTA = LATITUDE_DELTA * ASPECT_RATIO;
 
-import LogoutIcon from '../components/Logout';
-import SearchIcon from '../components/Search';
-import ScanIcon from '../components/Scan';
-import ListInactiveIcon from '../components/List';
-import MapInactiveIcon from '../components/Map';
-import ListActiveIcon from '../components/List-Active';
-import MapActiveIcon from '../components/Map-Active';
-
-var MainPage = React.createClass({
-  mixins: [TimerMixin],
-
-  searchNumber : function(){
-    console.log('\n\n\narrived\n\n\n');
-    return(
-      <TextInput style={styles.searchInputStyle} />
-    )
-  },
-
-  navigateItemListView: function(){
-   this.props.navigator.push({
-     title: 'Item List View',
-     component: TrashPandaListView,
-     navigationBarHidden: true,
-   })
- },
   componentWillMount(){
+    console.log(this.props);
     this._loadTrashCans();
   },
 
-
-  isMarkerVisibleOnMap(point_x, point_y){
-
-  },
-
-
   getInitialState() {
     return {
-      region: {
-        latitude: LATITUDE,
-        longitude: LONGITUDE,
-        latitudeDelta: LATITUDE_DELTA,
-        longitudeDelta: LONGITUDE_DELTA,
-      },
       trashCans:Immutable.List(),
     };
-  },
-
-  onRegionChange(region) {
-    if (this.isMounted()) {
-      this.setState({ region });
-    }
   },
 
   async okClicked (marker){
@@ -182,6 +123,15 @@ var MainPage = React.createClass({
     });
   },
 
+  getDot(marker){
+    if (marker.get('state') == 0)
+      return greenDot;
+    else if (marker.get('state') ==1)
+      return yellowDot;
+    else
+      return redDot;
+  },
+
   //get all trash cans and parse into lat lons
   async _loadTrashCans() {
       var url = 'http://' + this.props.server + ':8000/listcans'
@@ -202,66 +152,10 @@ var MainPage = React.createClass({
       });
   },
 
-  shouldComponentUpdate: function(nextProps, nextState) {
-    return nextState !== this.state;
-  },
-
-  getDot(marker){
-    if (marker.get('state') == 0)
-      return greenDot;
-    else if (marker.get('state') ==1)
-      return yellowDot;
-    else
-      return redDot;
-  },
-
-
-  
-
-  randomRegion() {
-    var { region } = this.state;
-    return {
-      ...this.state.region,
-      latitude: region.latitude + (Math.random() - 0.5) * region.latitudeDelta / 2,
-      longitude: region.longitude + (Math.random() - 0.5) * region.longitudeDelta / 2,
-    };
-  },
-  componentDidMount: function() {
-    this.setTimeout(function() {
-      this.setState({showMap: true});
-    }.bind(this), 250);
-  },
   render() {
     return (
-    <View style={styles.mainContainer}>
-    <NavigationBar
-      tintColor={'black'}
-      style={{marginBottom: 30}}
-      leftButton={
-          <LogoutIcon
-              onPress={() => alert('logout')}/>}
-      centerButton1={
-          <SearchIcon
-              // onPress={() => alert('center 1')}/>}
-              onPress={() => this.searchNumber()}/>}
-      centerButton2={
-          <ScanIcon
-              onPress={() => alert('center 2')}/>}
-      centerButton3={
-          <MapActiveIcon />}
-              // onPress={() => alert('center 3')}/>}
-      rightButton={
-          <ListInactiveIcon
-              onPress={() => this.navigateItemListView()}/>}/>
-      <View style={styles.container}>
-        <MapView
-          ref="map"
-          mapType="terrain"
-          style={styles.map}
-          region={this.state.region}
-          onRegionChange={this.onRegionChange}
-        >
-        {this.state.trashCans.map(marker => (
+      
+      {this.state.trashCans.map(marker => (
             <MapView.Marker
               coordinate={{latitude:marker.get('lat'), longitude:marker.get('lon')}}
               key = {marker.get('id')}
@@ -303,12 +197,8 @@ var MainPage = React.createClass({
               </MapView.Callout>
             </MapView.Marker>
           ))}
-        </MapView>
-      </View>
-      </View>
     );
   },
-
 
   getOkButtonStyle(state){
     if (state == 0)
@@ -432,6 +322,9 @@ var MainPage = React.createClass({
       }
     }
   },
+
+
+
 });
 
 var styles = StyleSheet.create({
@@ -556,4 +449,4 @@ var styles = StyleSheet.create({
   }
 });
 
-module.exports = MainPage;
+module.exports = CustomMarkers;
