@@ -174,9 +174,8 @@ var CustomMarkers = React.createClass({
           for(var i = 0; i<json.result.length; i++)
           //for(var i = 0; i<10; i++)
           {
-            if (json.result[i].id == 206)
-            {var can = Immutable.Map(json.result[i]);
-            t = t.push(can);}
+            var can = Immutable.Map(json.result[i]);
+            t = t.push(can);
           }
           this.setState({trashCans:t});
           this.props.trashCans = t;
