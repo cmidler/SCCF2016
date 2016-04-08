@@ -5,13 +5,15 @@ var {
   NavigatorIOS,
   StyleSheet
 } = React;
-var Immutable = require('immutable');
+
 var App = require('./App');
 
-const server = '192.168.1.9';
+const server = '128.237.219.218';
 
 var Codefest2016 = React.createClass({
+
   render() {
+    console.log(this.props.isSimulator);
     return(
       <NavigatorIOS
         style = {styles.container}
@@ -19,10 +21,7 @@ var Codefest2016 = React.createClass({
           title: "Select User",
           navigationBarHidden: true,
           component:App,
-          passProps: {'server': server, 
-          'userList': [],
-          'trashCans': Immutable.List(),
-        }
+          passProps: {'server': server}
       }}/>
     );
     //return <App />

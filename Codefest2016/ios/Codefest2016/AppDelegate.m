@@ -40,16 +40,37 @@
    * running the project on an actual device or running the project on the
    * simulator in the "Release" build configuration.
    */
+  
+  BOOL isSimulator = NO;
+  jsCodeLocation = [[NSBundle mainBundle] URLForResource:@"main" withExtension:@"jsbundle"];
+  #if TARGET_IPHONE_SIMULATOR
+    isSimulator = YES;
+    jsCodeLocation = [NSURL URLWithString:@"http://localhost:8081/index.ios.bundle?platform=ios&dev=true"];
+  #endif
 
-   jsCodeLocation = [[NSBundle mainBundle] URLForResource:@"main" withExtension:@"jsbundle"];
+  
 
   RCTRootView *rootView = [[RCTRootView alloc] initWithBundleURL:jsCodeLocation
                                                       moduleName:@"Codefest2016"
-                                               initialProperties:nil
+                                               initialProperties:@{@"isSimulator": @(isSimulator)}
                                                    launchOptions:launchOptions];
 
   self.window = [[UIWindow alloc] initWithFrame:[UIScreen mainScreen].bounds];
   UIViewController *rootViewController = [UIViewController new];
+  //ipad
+  if ( UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad )
+  {
+    NSLog(@"ipad");
+    rootView.layer.contents = (id)[UIImage imageNamed:@"ipad-splash.png"].CGImage;
+    [rootView setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"ipad-splash.png"]]];
+  }
+  else
+  {
+    NSLog(@"iphone");
+    rootView.layer.contents = (id)[UIImage imageNamed:@"splash.png"].CGImage;
+    [rootView setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"splash.png"]]];
+  }
+  
   rootViewController.view = rootView;
   self.window.rootViewController = rootViewController;
   [self.window makeKeyAndVisible];

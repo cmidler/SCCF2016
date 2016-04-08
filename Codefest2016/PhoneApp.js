@@ -14,7 +14,8 @@ import DropDown, {
 
 var MainPage = require('./CodeFestModules/MainPage');
 var Immutable = require('immutable');
-var trashCans = Immutable.List()
+var trashCans = Immutable.List();
+import Camera from 'react-native-camera';
 class App extends Component {
 
 	componentWillMount(){
