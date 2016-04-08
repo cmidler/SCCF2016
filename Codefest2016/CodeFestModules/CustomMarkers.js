@@ -23,11 +23,22 @@ const LONGITUDE_DELTA = LATITUDE_DELTA * ASPECT_RATIO;
 //behold, globals
 updateLat =0;
 updateLon =0;
+updateCustomMarker =1;
 
 var CustomMarkers = React.createClass({
-  
+
+  shouldComponentUpdate: function(nextProps, nextState) {
+    if (updateCustomMarker == 0){
+      console.log('shouldComponentUpdate called on CustomMarker - FALSE');
+      return false;
+    } else {
+      console.log('shouldComponentUpdate called on CustomMarker - TRUE');
+      return true;
+    }
+  },
+
+
   componentWillMount(){
-    //console.log(this.props);
     this._loadTrashCans();
   },
 
@@ -53,6 +64,7 @@ var CustomMarkers = React.createClass({
   setMarkerUpdateFlag(marker){
       updateLat = marker.get('lat');
       updateLon = marker.get('lon');
+      updateCustomMarker = 1;
   },
 
   async okClicked (marker){
@@ -185,7 +197,7 @@ var CustomMarkers = React.createClass({
             t = t.push(can);
           }
           this.setState({trashCans:t});
-
+          updateCustomMarker =0;
       })
       .catch((error) => {
         console.log("Error getting trashcans");
