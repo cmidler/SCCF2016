@@ -25,7 +25,8 @@ var MapMarker = React.createClass({
         //reset the globals
         updateLat =0;
         updateLon =0;
-
+        updateCustomMarker =0;
+        
         return true;
       } else {
         return false;

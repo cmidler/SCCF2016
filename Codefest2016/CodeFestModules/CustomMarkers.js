@@ -15,16 +15,18 @@ var Button = require('react-native-button');
 var { width, height } = Dimensions.get('window');
 
 const ASPECT_RATIO = width / height;
-const LATITUDE = 40.440624;
-const LONGITUDE = -79.995888;
+const LATITUDE = 40.4406248;
+const LONGITUDE = -80.0022754;
 const LATITUDE_DELTA = 0.0025;
 const LONGITUDE_DELTA = LATITUDE_DELTA * ASPECT_RATIO;
 
 //behold, globals
 updateLat =0;
 updateLon =0;
+updateCustomMarker =1;
 
 var CustomMarkers = React.createClass({
+
 
 
   updateMarker(marker){
@@ -36,6 +38,7 @@ var CustomMarkers = React.createClass({
       {
         if(marker.get('state') != this.state.trashCans.get(i).get('state'))
         {
+          this.setMarkerUpdateFlag(marker);
           var t = this.state.trashCans.set(i,marker);
           this.setState({trashCans: t});
           console.log("setting state for trashCan " + marker.get('id'));
@@ -55,7 +58,18 @@ var CustomMarkers = React.createClass({
       this._loadTrashCans();
     else
       this.setState({trashCans:this.props.trashCans});
+    },
+
+  shouldComponentUpdate: function(nextProps, nextState) {
+    if (updateCustomMarker == 0){
+      console.log('shouldComponentUpdate called on CustomMarker - FALSE');
+      return false;
+    } else {
+      console.log('shouldComponentUpdate called on CustomMarker - TRUE');
+      return true;
+    }
   },
+  
 
   getInitialState() {
     return {
@@ -79,6 +93,7 @@ var CustomMarkers = React.createClass({
   setMarkerUpdateFlag(marker){
       updateLat = marker.get('lat');
       updateLon = marker.get('lon');
+      updateCustomMarker = 1;
   },
 
   async okClicked (marker){
@@ -208,11 +223,13 @@ var CustomMarkers = React.createClass({
           for(var i = 0; i<json.result.length; i++)
           //for(var i = 0; i<10; i++)
           {
-            if(json.result[i].id == 206){
             var can = Immutable.Map(json.result[i]);
-            t = t.push(can);}
+            t = t.push(can);
           }
           this.setState({trashCans:t});
+
+          //disable custom marker updates until action is taken
+          updateCustomMarker =0;
       })
       .catch((error) => {
         console.log("Error getting trashcans");
