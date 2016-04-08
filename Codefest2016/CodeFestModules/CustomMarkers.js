@@ -197,6 +197,8 @@ var CustomMarkers = React.createClass({
             t = t.push(can);
           }
           this.setState({trashCans:t});
+
+          //disable custom marker updates until action is taken
           updateCustomMarker =0;
       })
       .catch((error) => {
