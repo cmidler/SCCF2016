@@ -23,10 +23,19 @@ const LONGITUDE_DELTA = LATITUDE_DELTA * ASPECT_RATIO;
 
 var CustomMarkers = React.createClass({
 
+  updateMarker(marker){
+    console.log(marker.get('id'));
+  },
+
+  getTrashCans(){
+    return this.state.trashCans;
+  },
 
   componentWillMount(){
-    //console.log(this.props);
-    this._loadTrashCans();
+    if(this.props.trashCans.size == 0)
+      this._loadTrashCans();
+    else
+      this.setState({trashCans:this.props.trashCans});
   },
 
   getInitialState() {
@@ -163,12 +172,14 @@ var CustomMarkers = React.createClass({
         .then((json) => {
           var t = Immutable.List();
           for(var i = 0; i<json.result.length; i++)
+          //for(var i = 0; i<10; i++)
           {
-            var can = Immutable.Map(json.result[i]);
-            t = t.push(can);
+            if (json.result[i].id == 206)
+            {var can = Immutable.Map(json.result[i]);
+            t = t.push(can);}
           }
           this.setState({trashCans:t});
-          
+          this.props.trashCans = t;
       })
       .catch((error) => {
         console.log("Error getting trashcans");

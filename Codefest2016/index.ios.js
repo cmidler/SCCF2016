@@ -5,9 +5,9 @@ var {
   NavigatorIOS,
   StyleSheet
 } = React;
-
+var Immutable = require('immutable');
 var App = require('./App');
-const server = '128.237.219.22';
+const server = '192.168.1.9';
 var Codefest2016 = React.createClass({
   render() {
     return(
@@ -17,7 +17,10 @@ var Codefest2016 = React.createClass({
           title: "Select User",
           navigationBarHidden: true,
           component:App,
-          passProps: {'server': server}
+          passProps: {'server': server, 
+          'userList': [],
+          'trashCans': Immutable.List(),
+        }
       }}/>
     );
     //return <App />

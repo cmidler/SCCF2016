@@ -17,8 +17,8 @@ var MainPage = require('./CodeFestModules/MainPage');
 class App extends Component {
 
 	componentWillMount(){
-		console.log("Server is " +this.props.server);
-    	this._loadUserList();
+		if (this.props.userList.length == 0)
+    		this._loadUserList();
   	}
 
   	constructor(props) {
@@ -69,11 +69,15 @@ class App extends Component {
 			}
 		}
 		console.log(user);
-	  	this.props.navigator.replace({
+	  	this.props.navigator.push({
 	        title: 'Main Page',
 	        component: MainPage,
 	        navigationBarHidden: true,
-	        passProps: {'user': user, 'server':this.props.server}
+	        passProps: {'user': user, 
+	        'server':this.props.server, 
+	        'userList': this.state.userList,
+	        'trashCans': this.props.trashCans,
+	    	}
 	    });
   	}
 

@@ -11,6 +11,7 @@ var {
 } = React;
 
 var MapView = require('react-native-maps');
+var LogoutView = require('../App');
 // var NavBar = require('./NavBar');
 var NavigationBar = require('./react-native-navbar');
 var TrashPandaListView = require('./ItemListView');
@@ -18,8 +19,9 @@ var TimerMixin = require('react-timer-mixin');
 var CustomMarkers = require('./CustomMarkers');
 var { width, height } = Dimensions.get('window');
 var Button = require('react-native-button');
-
+var BarcodeScanner = require('./BarcodeScanner');
 var Immutable = require('immutable');
+
 
 const ASPECT_RATIO = width / height;
 const LATITUDE = 40.440624;
@@ -34,6 +36,8 @@ import ListInactiveIcon from '../components/List';
 import MapInactiveIcon from '../components/Map';
 import ListActiveIcon from '../components/List-Active';
 import MapActiveIcon from '../components/Map-Active';
+
+
 
 var MainPage = React.createClass({
   mixins: [TimerMixin],
@@ -52,10 +56,44 @@ var MainPage = React.createClass({
      navigationBarHidden: true,
    })
  },
-  /*componentWillMount(){
-    this._loadTrashCans();
-  },*/
 
+  navigateBarcodeScanner(){
+    trashCans = this.getCans();
+    this.props.navigator.push({
+      title: 'Barcode Scanner View',
+      component: BarcodeScanner,
+      navigationBarHidden: true,
+      passProps: {'user': this.props.user, 
+      'server':this.props.server,
+      'trashCans': trashCans},
+      callback: this.updateCans,
+   })
+  },
+
+
+
+  navigateLogout: function(){
+    trashCans = this.getCans();
+    this.props.navigator.pop({
+      title: "Select User",
+      navigationBarHidden: true,
+      component:LogoutView,
+      passProps: {'server': this.props.server,
+         'userList': this.props.userList,
+         'trashCans': trashCans,
+      } 
+    })
+  },
+
+  updateCans: function(marker){
+    this.refs.trashCans.updateMarker(marker)
+  },
+
+  getCans: function(){
+    var trash = this.refs.trashCans.getTrashCans();
+    console.log(trash);
+    return trash;
+  },
 
   isMarkerVisibleOnMap(point_x, point_y){
 
@@ -80,9 +118,6 @@ var MainPage = React.createClass({
     }
   },
 
-  
-
-  
 
   shouldComponentUpdate: function(nextProps, nextState) {
     return nextState !== this.state;
@@ -92,17 +127,12 @@ var MainPage = React.createClass({
 
 
   componentDidMount: function() {
+    console.log(CustomMarkers);
     this.setTimeout(function() {
       this.setState({showMap: true});
     }.bind(this), 250);
   },
   render() {
-    // const rightButtonConfig = {
-    //   title: 'Item List View',
-    //   handler: () => this.props.navigator.push({
-    //     component: ItemListView,
-    //   }),
-    // };
     return (
 
     <View style={styles.mainContainer}>
@@ -111,21 +141,24 @@ var MainPage = React.createClass({
       style={{marginBottom: 30}}
       leftButton={
           <LogoutIcon
-              onPress={() => alert('logout')}/>}
+              onPress={() => this.navigateLogout()}/>}
       centerButton1={
           <SearchIcon
-              onPress={() => alert('center 1')}/>}
+              onPress={() => this.refs.testFunc.testFunction()}/>}
       centerButton2={
           <ScanIcon
-              onPress={() => alert('center 2')}/>}
+              onPress={() => this.navigateBarcodeScanner()}/>}
       centerButton3={
-          <MapActiveIcon
-              onPress={() => alert('center 3')}/>}
+          <MapActiveIcon/>}
       rightButton={
           <ListInactiveIcon
               onPress={() => this.navigateItemListView()}/>}/>
       <View style={styles.container}>
-        <CustomMarkers server={this.props.server} user = {this.props.user}/>
+        <CustomMarkers 
+          server={this.props.server} 
+          user = {this.props.user}
+          trashCans = {this.props.trashCans}
+          ref={'trashCans'}/>
       </View>
       </View>
     );
@@ -151,44 +184,6 @@ var styles = StyleSheet.create({
   latlng: {
     width: 200,
     alignItems: 'stretch',
-  },
-  bubbleTitleText:{
-    color: '#000000',
-    alignSelf: 'center',
-    fontSize: 20,
-  },
-  buttonContainer: {
-    flexDirection: 'row',
-    marginVertical: 20,
-    backgroundColor: 'transparent',
-  },
-  
-  bubble: {
-    width: 140,
-    //flexDirection: 'row',
-    alignSelf: 'flex-start',
-    backgroundColor: '#ffffff',
-    paddingHorizontal: 20,
-    paddingVertical: 12,
-    borderRadius: 6,
-    borderColor: '#000000',
-    borderWidth: 0.5,
-  },
-  arrow: {
-    backgroundColor: 'transparent',
-    borderWidth: 16,
-    borderColor: 'transparent',
-    borderTopColor: '#FFFFFF',
-    alignSelf: 'center',
-    marginTop: -32,
-  },
-  arrowBorder: {
-    backgroundColor: 'transparent',
-    borderWidth: 16,
-    borderColor: 'transparent',
-    borderTopColor: '#000000',
-    alignSelf: 'center',
-    marginTop: -0.5,
   },
 });
 
