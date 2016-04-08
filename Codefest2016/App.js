@@ -13,7 +13,9 @@ import DropDown, {
 } from 'react-native-selectme';
 
 var MainPage = require('./CodeFestModules/MainPage');
+var MainCollectorPage = require('./CodeFestModules/MainCollectorPage')
 var Immutable = require('immutable');
+var Device = require('react-native-device');
 var trashCans = Immutable.List()
 class App extends Component {
 
@@ -73,22 +75,38 @@ class App extends Component {
 				break;
 			}
 		}
-		console.log(user);
+    if (Device.isIpad()){
+	  	this.props.navigator.push({
+	        title: 'Main Page',
+	        component: MainCollectorPage,
+	        navigationBarHidden: true,
+	        passProps: {'user': user,
+	        'server':this.props.server,
+	        'userList': this.state.userList,
+	        'trashCans': trashCans,
+          'device' : 'iPad',
+	    	},
+	    	callback:this.updateTrashCans,
+	    });
+    } else {
 	  	this.props.navigator.push({
 	        title: 'Main Page',
 	        component: MainPage,
 	        navigationBarHidden: true,
-	        passProps: {'user': user, 
-	        'server':this.props.server, 
+	        passProps: {'user': user,
+	        'server':this.props.server,
 	        'userList': this.state.userList,
 	        'trashCans': trashCans,
+          'device' : 'iPhone',
 	    	},
 	    	callback:this.updateTrashCans,
 	    });
+    }
+
   	}
 
 	render(){
-		
+
 		return (
 
 			<View style={styles.optionBox}>
