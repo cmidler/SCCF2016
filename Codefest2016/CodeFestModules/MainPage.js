@@ -57,6 +57,8 @@ var MainPage = React.createClass({
      passProps: {
       'trashCans': this.getCans(),
       'refer': this.refs.trashCans,
+      'server': this.props.server,
+      'user': this.props.user, 
      },
    })
  },
