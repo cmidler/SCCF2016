@@ -7,7 +7,8 @@ var {
 } = React;
 
 var App = require('./App');
-const server = '128.237.219.22';
+// const server = '128.237.219.22';
+const server = '127.0.0.1';
 var Codefest2016 = React.createClass({
   render() {
     return(

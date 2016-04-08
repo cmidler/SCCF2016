@@ -5,8 +5,9 @@ var {
   Text,
   Dimensions,
 } = React;
+
 var Immutable = require('immutable');
-var MapView = require('react-native-maps');
+var MapView = require('./react-native-maps');
 var greenDot = require('../circle-green/ios/Icon-12@2x.png');
 var yellowDot = require('../circle-yellow/ios/yellow-Icon-12@2x.png');
 var redDot = require('../circle-red/ios/red-12@2x.png');
@@ -19,11 +20,12 @@ const LONGITUDE = -79.995888;
 const LATITUDE_DELTA = 0.0025;
 const LONGITUDE_DELTA = LATITUDE_DELTA * ASPECT_RATIO;
 
-
+//behold, globals
+updateLat =0;
+updateLon =0;
 
 var CustomMarkers = React.createClass({
-
-
+  
   componentWillMount(){
     //console.log(this.props);
     this._loadTrashCans();
@@ -47,13 +49,22 @@ var CustomMarkers = React.createClass({
     }
   },
 
+  //update globals
+  setMarkerUpdateFlag(marker){
+      updateLat = marker.get('lat');
+      updateLon = marker.get('lon');
+  },
+
   async okClicked (marker){
-    
+
     if (marker.get('state') == 0)
       return;
+
+    //flag coordinate set for update
+    this.setMarkerUpdateFlag(marker);
     newMarker = marker.set('state',0);
     //this.state.trashCans = this.state.trashCans.set(marker,newMarker);
-    
+
     var index = 0;
     for(var i = 0; i<this.state.trashCans.size; i++)
     {
@@ -66,7 +77,7 @@ var CustomMarkers = React.createClass({
     }
     var t = this.state.trashCans.set(index,newMarker);
     this.setState({trashCans: t});
-    
+
     var url = 'http://' + this.props.server + ':8000/trash_pickup'
     fetch(url, {
       method: 'POST',
@@ -86,6 +97,9 @@ var CustomMarkers = React.createClass({
     console.log('Pickup clicked for ' + marker.id);
     if (marker.get('state') == 1)
       return;
+
+    //flag coordinate set for update
+    this.setMarkerUpdateFlag(marker);
     newMarker = marker.set('state',1);
     var index = 0;
     for(var i = 0; i<this.state.trashCans.size; i++)
@@ -118,6 +132,9 @@ var CustomMarkers = React.createClass({
     console.log('Emergency clicked for ' + marker.id);
     if (marker.get('state') == 2)
       return;
+
+    //flag coordinate set for update
+    this.setMarkerUpdateFlag(marker);
     newMarker = marker.set('state',2);
     var index = 0;
     for(var i = 0; i<this.state.trashCans.size; i++)
@@ -168,7 +185,7 @@ var CustomMarkers = React.createClass({
             t = t.push(can);
           }
           this.setState({trashCans:t});
-          
+
       })
       .catch((error) => {
         console.log("Error getting trashcans");
@@ -178,7 +195,7 @@ var CustomMarkers = React.createClass({
 
 
   render() {
-    
+
     return (
       <MapView
           ref="map"
@@ -230,7 +247,7 @@ var CustomMarkers = React.createClass({
               </MapView.Marker>
             ))}
         </MapView>
-    
+
     );
   },
 
