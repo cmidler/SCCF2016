@@ -35,59 +35,21 @@ var TrashPandaListView = React.createClass({
       navigationBarHidden: true
     });
  },
+
   getInitialState: function() {
     var ds = new ListView.DataSource({
       sectionHeaderHasChanged: (r1, r2) => r1 !== r2,
-      rowHasChanged: (r1, r2) => r1 !== r2});
-
-    console.log(this.props.trashCans);
-
+      rowHasChanged: (r1, r2) => r1 !== r2
+    });
     return {
-      dataSource: ds.cloneWithRows(this.props.trashCans.toArray()),
-      // dataSource: ds.cloneWithRows(
-      //     ['G\t\t     4512\t\tZone 1\t\t10/10/15 - 8:35am',
-      //     'Y\t\t     4513\t\tZone 1\t\t10/09/15 - 9:21am',
-      //     'R\t\t     4514\t\tZone 1\t\t10/12/15 - 10:45am',
-      //     'G\t\t     4515\t\tZone 1\t\t10/11/15 - 9:35pm',
-      //     'Y\t\t     4516\t\tZone 1\t\t10/13/15 - 10:15am',
-      //     'G\t\t     4517\t\tZone 2\t\t10/14/15 - 4:35pm',
-      //     'Y\t\t     4518\t\tZone 2\t\t10/15/15 - 9:35am',
-      //     'G\t\t     4519\t\tZone 2\t\t10/01/15 - 9:45am',
-      //     'Y\t\t     4510\t\tZone 2\t\t10/02/15 - 9:55am',
-      //     'R\t\t     4511\t\tZone 3\t\t10/03/15 - 10:35am',
-      //     'R\t\t     4512\t\tZone 3\t\t10/05/15 - 10:45am',
-      //     'G\t\t     4513\t\tZone 3\t\t10/11/15 - 10:55am',
-      //     'Y\t\t     4514\t\tZone 3\t\t10/11/15 - 11:35am',
-      //     'G\t\t     4515\t\tZone 4\t\t10/12/15 - 12:35am',
-      //     'R\t\t     4516\t\tZone 4\t\t10/13/15 - 14:35am',
-      //     'Y\t\t     4517\t\tZone 4\t\t10/15/15 - 9:35am',
-      //     'Y\t\t     4518\t\tZone 4\t\t10/16/15 - 10:35am',
-      //     'R\t\t     4519\t\tZone 1\t\t10/17/15 - 11:35am',
-      //     'Y\t\t     4520\t\tZone 1\t\t10/18/15 - 12:35pm',
-      //     'R\t\t     4521\t\tZone 5\t\t10/19/15 - 10:35am',
-      //     'Y\t\t     4522\t\tZone 2\t\t10/11/15 - 9:35am',
-      //     'G\t\t     4523\t\tZone 3\t\t10/12/15 - 9:15am',
-      //     'Y\t\t     4524\t\tZone 4\t\t10/13/15 - 9:12am',
-      //     'Y\t\t     4525\t\tZone 5\t\t10/15/15 - 10:25am',
-      //     'G\t\t     4526\t\tZone 1\t\t10/05/15 - 11:45am',
-      //     'Y\t\t     4527\t\tZone 5\t\t10/01/15 - 10:35am',
-      //     'G\t\t     4528\t\tZone 3\t\t10/02/15 - 1:35pm',
-      //     'Y\t\t     4529\t\tZone 3\t\t10/03/15 - 2:35pm',
-      //     'G\t\t     4530\t\tZone 3\t\t10/05/15 - 3:35pm',
-      //     'R\t\t     4531\t\tZone 2\t\t10/06/15 - 4:35pm',
-      //     'Y\t\t     4532\t\tZone 1\t\t10/11/15 - 2:35pm',
-      //     'R\t\t     4533\t\tZone 5\t\t10/12/15 - 12:35pm',
-      //     'G\t\t     4534\t\tZone 5\t\t10/15/15 - 8:35am',
-      //     'G\t\t     4535\t\tZone 2\t\t10/12/15 - 8:35am',
-      //     'G\t\t     4536\t\tZone 2\t\t10/09/15 - 8:35am',
-      //     'Y\t\t     4537\t\tZone 5\t\t10/08/15 - 8:35am',
-      //     'R\t\t     4538\t\tZone 1\t\t10/05/15 - 8:35am',
-      //     'Y\t\t     4539\t\tZone 3\t\t10/06/15 - 8:35am',
-      //     'R\t\t     4540\t\tZone 5\t\t10/01/15 - 8:35am',
-      //     'Y\t\t     4541\t\tZone 4\t\t10/03/15 - 8:35am',
-      //     'G\t\t     4542\t\tZone 3\t\t10/04/15 - 8:35am',
-      //     'Y\t\t     4543\t\tZone 2\t\t10/05/15 - 8:35am']),
+      dataSource: ds.cloneWithRows([]),
+      cans: this.props.trashCans.toArray(),
     };
+  },
+  componentDidMount: function() {
+      this.setState({
+        dataSource: this.state.dataSource.cloneWithRows(this.state.cans),
+      })
   },
 
   sortListByStatus: function(rowData){
@@ -106,20 +68,144 @@ var TrashPandaListView = React.createClass({
 
   },
 
+  greenClicked: function(tcid) {
+    console.log('green clicked: ' + tcid);
+
+    var cans = this.state.cans.slice(0);
+
+    var index = 0;
+    for(var i = 0; i < cans.length; i++)
+    {
+      if(cans[i].get('id') == tcid)
+      {
+        index = i;
+        break;
+      }
+    }
+
+    var tc = cans[index];
+
+    if (tc.get('state') == 10) {
+      console.log('Skipping cause state is already 0');
+      return;
+    }
+    cans[index] = tc.set('state', 0);
+
+    var url = 'http://' + this.props.server + ':8000/trash_pickup'
+    fetch(url, {
+      method: 'POST',
+      body: JSON.stringify({
+        'user_token': this.props.user.id,
+        'trash_locations': [
+          {
+            'id': tcid,
+            'timestamp': Date.now()
+          }
+        ]
+      })
+    });
+
+    this.setState({
+      dataSource: this.state.dataSource.cloneWithRows(cans),
+      cans: cans,
+    })
+  },
+
+  yellowClicked: function(tcid) {
+    console.log('yellow clicked: ' + tcid);
+
+    var cans = this.state.cans.slice(0);
+
+    var index = 0;
+    for(var i = 0; i < cans.length; i++)
+    {
+      if(cans[i].get('id') == tcid)
+      {
+        index = i;
+        break;
+      }
+    }
+
+    var tc = cans[index];
+
+    if (tc.get('state') == 2 || tc.get('state') == 1) {
+      console.log('Skipping cause state is already 2 or 1');
+      return;
+    }
+    cans[index] = tc.set('state', 1);
+
+    var url = 'http://' + this.props.server + ':8000/trash_drop'
+    fetch(url, {
+      method: 'POST',
+      body: JSON.stringify({
+        'user_token': this.props.user.id,
+        'trash_locations': [
+          {
+            'id': tcid,
+            'timestamp': Date.now()
+          }
+        ]
+      })
+    });
+
+    this.setState({
+      dataSource: this.state.dataSource.cloneWithRows(cans),
+      cans: cans,
+    })
+  },
+
+  emergencyClicked: function (tcid){
+    console.log('Emergency clicked: ' + tcid);
+
+    var cans = this.state.cans.slice(0);
+
+    var index = 0;
+    for(var i = 0; i < cans.length; i++)
+    {
+      if(cans[i].get('id') == tcid)
+      {
+        index = i;
+        break;
+      }
+    }
+
+    var tc = cans[index];
+
+    if (tc.get('state') == 2) {
+      console.log('Skipping cause state is already 2');
+      return;
+    }
+    cans[index] = tc.set('state', 2);
+
+    var url = 'http://' + this.props.server + ':8000/trash_emergency'
+    fetch(url, {
+      method: 'POST',
+      body: JSON.stringify({
+        'user_token': this.props.user.id,
+        'trash_locations': [
+          {
+            'id': tcid,
+            'timestamp': Date.now()
+          }
+        ]
+      })
+    });
+
+    this.setState({
+      dataSource: this.state.dataSource.cloneWithRows(cans),
+      cans: cans,
+    })
+  },
 
   _renderRow: function(rowData, sectionId, rowId) {
-    console.log('rowData');
-    console.log(rowData);
-    // var statusTag = 'R';
-    // var statusTag = 'rowData.split('\t')[0];'
-    // rowData = rowData.replace("G\t\t","\t");
-    // rowData = rowData.replace("Y\t\t","\t");
-    // rowData = rowData.replace("R\t\t","\t");
     var d = new Date(rowData.get('last_pickup'));
     var mm = d.getMonth() + 1;
     var dd = d.getDate();
     var yy = ('' + d.getFullYear()).substring(2,4);
     var hh = '' + (d.getHours() % 12);
+    if (hh == '0') {
+      hh = '12';
+    }
     var min = '' + d.getMinutes();
     if (min.length == 1)
       min = '0' + min;
@@ -153,13 +239,16 @@ var TrashPandaListView = React.createClass({
 
     var content = (
       <View style={styles.accordionStyle}>
-        <Button style={styles.okButtonStyle} textStyle={styles.buttonTextStyle}>
+        <Button style={styles.okButtonStyle} textStyle={styles.buttonTextStyle}
+          onPress={()=>this.greenClicked(rowData.get('id'))}>
           Ok
         </Button>
-        <Button style={styles.pickupButtonStyle} textStyle={styles.buttonTextStyle}>
+        <Button style={styles.pickupButtonStyle} textStyle={styles.buttonTextStyle}
+          onPress={()=>this.yellowClicked(rowData.get('id'))}>
           Pick-up
         </Button>
-        <Button style={styles.emergencyButtonStyle} textStyle={styles.emergencyButtonTextStyle}>
+        <Button style={styles.emergencyButtonStyle} textStyle={styles.emergencyButtonTextStyle}
+          onPress={()=>this.emergencyClicked(rowData.get('id'))}>
           Emergency
         </Button>
       </View>

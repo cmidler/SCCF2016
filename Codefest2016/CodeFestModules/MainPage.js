@@ -55,10 +55,12 @@ var MainPage = React.createClass({
      title: 'Item List View',
      component: TrashPandaListView,
      navigationBarHidden: true,
-     passProps: {'user': this.props.user, 
-      'server':this.props.server,
-      'trashCans': trashCans,
-      'refer': this.refs.trashCans},
+     passProps: {
+      'trashCans': this.getCans(),
+      'refer': this.refs.trashCans,
+      'server': this.props.server,
+      'user': this.props.user, 
+     },
    })
  },
 
