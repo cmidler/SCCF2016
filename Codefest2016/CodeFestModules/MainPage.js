@@ -79,7 +79,7 @@ var MainPage = React.createClass({
 
   navigateLogout: function(){
     this.updateCans();
-    this.props.navigator.pop()
+    this.props.navigator.popToTop()
   },
 
   updateCans: function(){
