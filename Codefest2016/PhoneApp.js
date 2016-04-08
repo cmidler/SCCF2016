@@ -36,10 +36,6 @@ var PhoneApp = React.createClass ({
   	renderCamera() {
 	    if(this.state.showCamera) {
 	        return (
-	        	<View style={{ flex: 1 }}>
-		        	<View style={styles.bgImageWrapper}>
-		        		<Image source={SplashImage} style={styles.bgImage}/>
-		        	</View>
 		            <Camera
 		                ref="cam"
 		                style={styles.container}
@@ -52,7 +48,6 @@ var PhoneApp = React.createClass ({
 					        </Button>    
 					    </View>
 		            </Camera>
-	            </View>
 	        );
 	    } else {
 	        return (
@@ -198,16 +193,7 @@ var styles = StyleSheet.create({
     },
     buttonText: {
         color: "#FFFFFF"
-    },
-    bgImageWrapper: {
-        position: 'absolute',
-        top: 0, bottom: 0, left: 0, right: 0
-    },
-    bgImage: {
-        flex: 1,
-        resizeMode: "stretch"
-    },
-
+    }
 });
 
 module.exports = PhoneApp;

@@ -64,14 +64,11 @@ class App extends Component {
 	updateTrashCans(refer){
 		if(this.props.mainTab == 'barcode')
 		{
-			console.log("SHOULD POP");
 			this.props.route.callback(refer);
 			this.props.navigator.pop();
-			console.log("Pop");
 		}
 		else
 		{
-			console.log("Main tab = " + this.props.mainTab);
 			trashCans = refer.getTrashCans();
 		}
 	}
@@ -133,10 +130,9 @@ class App extends Component {
 
 	render(){
 		return (
-			/*<View style={{ flex: 1 }}>
-	        	<View style={styles.bgImageWrapper}>
-	        		<Image source={SplashImage} style={styles.bgImage}/>
-	        	</View>*/
+			
+	        	
+	        <Image source={SplashImage} style={styles.bgImage}>
 			<View style={styles.optionBox}>
 		      <Select
 		        width={250}
@@ -159,7 +155,9 @@ class App extends Component {
 		      </Select>
 		      <OptionList ref="OPTIONLIST"/>
 			</View>
-			//</View>
+			</Image>
+	        	
+			
 		);
 	}
 }
@@ -169,6 +167,7 @@ var styles = StyleSheet.create({
 		flex: 1,
 		justifyContent: 'center',
 		alignItems: 'center'
+
 	},
   container: {
         flex: 1,
@@ -200,7 +199,9 @@ var styles = StyleSheet.create({
     },
     bgImage: {
         flex: 1,
-        resizeMode: "stretch"
+        width: null,
+        height: null,
+        //resizeMode: "stretch"
     },
 });
 
