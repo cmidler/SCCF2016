@@ -97,7 +97,9 @@ var PhoneApp = React.createClass ({
 	        passProps: { 'server':this.props.server, 
 	        'userList': this.state.userList,
 	        'trashCans': trashCans,
-	    	}
+	        'mainTab': 'barcode',
+	    	},
+	    	callback:this.updateTrashCans,
 	    });
 	},
 
@@ -127,22 +129,9 @@ var PhoneApp = React.createClass ({
 		
 	},
 
-	nextPage(value)
+	nextPage(user)
 	{
 
-		var user = null;
-
-		for(var i = 0; i<this.state.userList.length; i++)
-		{
-			var name = this.state.userList[i].first_name + ' ' + this.state.userList[i].last_name;
-
-			if (name == value)
-			{
-				user = this.state.userList[i];
-				break;
-			}
-		}
-		console.log(user);
 	  	this.props.navigator.push({
 	        title: 'Main Page',
 	        component: MainPage,
@@ -151,6 +140,7 @@ var PhoneApp = React.createClass ({
 	        'server':this.props.server, 
 	        'userList': this.state.userList,
 	        'trashCans': trashCans,
+	        'mainTab': 'barcode',
 	    	},
 	    	callback:this.updateTrashCans,
 	    });

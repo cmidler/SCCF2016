@@ -4,6 +4,7 @@ import React, {
   Text,
   View,
   StyleSheet,
+  Image,
 } from 'react-native';
 
 import DropDown, {
@@ -14,7 +15,8 @@ import DropDown, {
 
 var MainPage = require('./CodeFestModules/MainPage');
 var Immutable = require('immutable');
-var trashCans = Immutable.List()
+var trashCans = Immutable.List();
+var SplashImage = require('./images/splash.png');
 class App extends Component {
 
 	componentWillMount(){
@@ -57,7 +59,18 @@ class App extends Component {
 	}
 
 	updateTrashCans(refer){
-		trashCans = refer.getTrashCans();
+		if(this.props.mainTab == 'barcode')
+		{
+			console.log("SHOULD POP");
+			this.props.route.callback(refer);
+			this.props.navigator.pop();
+			console.log("Pop");
+		}
+		else
+		{
+			console.log("Main tab = " + this.props.mainTab);
+			trashCans = refer.getTrashCans();
+		}
 	}
 
 	nextPage(value)
@@ -76,6 +89,9 @@ class App extends Component {
 			}
 		}
 		console.log(user);
+		var cb = this.updateTrashCans;
+		if(this.props.mainTab == 'barcode')
+			cb = this.props.route.callback;
 	  	this.props.navigator.push({
 	        title: 'Main Page',
 	        component: MainPage,
@@ -85,14 +101,16 @@ class App extends Component {
 	        'userList': this.state.userList,
 	        'trashCans': trashCans,
 	    	},
-	    	callback:this.updateTrashCans,
+	    	callback:cb,
 	    });
   	}
 
 	render(){
-		
 		return (
-
+			/*<View style={{ flex: 1 }}>
+	        	<View style={styles.bgImageWrapper}>
+	        		<Image source={SplashImage} style={styles.bgImage}/>
+	        	</View>*/
 			<View style={styles.optionBox}>
 		      <Select
 		        width={250}
@@ -115,6 +133,7 @@ class App extends Component {
 		      </Select>
 		      <OptionList ref="OPTIONLIST"/>
 			</View>
+			//</View>
 		);
 	}
 }
@@ -126,14 +145,37 @@ var styles = StyleSheet.create({
 		alignItems: 'center'
 	},
   container: {
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    right: 0,
-    bottom: 0,
-    justifyContent: 'flex-end',
-    alignItems: 'center',
-  },
+        flex: 1,
+        justifyContent: "center",
+        alignItems: "center",
+        backgroundColor: "transparent",
+    },
+    buttonBar: {
+        flexDirection: "row",
+        position: "absolute",
+        top: 44,
+        right: 0,
+        left: 0,
+        justifyContent: "center"
+    },
+    button: {
+        padding: 10,
+        color: "#FFFFFF",
+        borderWidth: 1,
+        borderColor: "#FFFFFF",
+        margin: 5
+    },
+    buttonText: {
+        color: "#FFFFFF"
+    },
+    bgImageWrapper: {
+        position: 'absolute',
+        top: 0, bottom: 0, left: 0, right: 0
+    },
+    bgImage: {
+        flex: 1,
+        resizeMode: "stretch"
+    },
 });
 
 module.exports = App;

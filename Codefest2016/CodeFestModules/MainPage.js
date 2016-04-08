@@ -84,6 +84,7 @@ var MainPage = React.createClass({
 
   updateCans: function(){
     this.props.route.callback(this.refs.trashCans);
+
   },
 
   getCans: function(){
