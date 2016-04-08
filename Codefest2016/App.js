@@ -33,6 +33,8 @@ class App extends Component {
 	    this.updateTrashCans = this.updateTrashCans.bind(this);
   	}
 
+  	
+
 
   	//get all trash cans and parse into lat lons
 	async _loadUserList() {

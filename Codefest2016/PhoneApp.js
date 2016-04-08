@@ -4,34 +4,102 @@ import React, {
   Text,
   View,
   StyleSheet,
+  AlertIOS,
+  Image,
 } from 'react-native';
 
-import DropDown, {
-  Select,
-  Option,
-  OptionList,
-} from 'react-native-selectme';
 
 var MainPage = require('./CodeFestModules/MainPage');
 var Immutable = require('immutable');
 var trashCans = Immutable.List();
+var Button = require('react-native-button');
+var App = require('./App');
+var SplashImage = require('./images/splash.png');
 import Camera from 'react-native-camera';
-class App extends Component {
+var PhoneApp = React.createClass ({
 
 	componentWillMount(){
 		if (this.state.userList.length == 0)
     		this._loadUserList();
-  	}
+  	},
 
-  	constructor(props) {
-	    super(props);
-
-	    this.state = {
+  	getInitialState() {
+	    return {
 	      userList: [],
+	      showCamera: true,
+	      cameraType: Camera.constants.Type.back,
 	    };
-	    this.updateTrashCans = this.updateTrashCans.bind(this);
-  	}
+	 },
 
+  	renderCamera() {
+	    if(this.state.showCamera) {
+	        return (
+	        	<View style={{ flex: 1 }}>
+		        	<View style={styles.bgImageWrapper}>
+		        		<Image source={SplashImage} style={styles.bgImage}/>
+		        	</View>
+		            <Camera
+		                ref="cam"
+		                style={styles.container}
+		                onBarCodeRead={this._onBarCodeRead}
+		                type={this.state.cameraType}
+		            >
+		            	<View style={styles.buttonBar}>
+				            <Button style={styles.button} onPress={this.exitCamera}>
+					            <Text style={styles.buttonText}>Exit</Text>
+					        </Button>    
+					    </View>
+		            </Camera>
+	            </View>
+	        );
+	    } else {
+	        return (
+	            <View></View>
+	        );
+	    }
+	},
+
+	_onBarCodeRead(e) {
+	    this.setState({showCamera: false});
+	    var userId = e.data;
+	    var user = null;
+	    for(var i = 0; i<this.state.userList.length;i++)
+	    {
+	    	if (userId == this.state.userList[i].id)
+	    	{
+	    		user = this.state.userList[i];
+	    		break;
+	    	}
+	    }
+
+	    if (user == null)
+	    {
+	    	AlertIOS.alert(
+			  "Could not find user.  Please scan again.",
+			  null,
+			  [
+			    {text: 'OK', onPress: () => this.setState({showCamera: true})},
+			  ],
+			);
+	    }
+	    else
+	    {
+	    	this.nextPage(user);
+	    }
+	},
+
+	exitCamera(){
+		this.setState({showCamera: false});
+		this.props.navigator.push({
+	        title: 'User List',
+	        component: App,
+	        navigationBarHidden: true,
+	        passProps: { 'server':this.props.server, 
+	        'userList': this.state.userList,
+	        'trashCans': trashCans,
+	    	}
+	    });
+	},
 
   	//get all trash cans and parse into lat lons
 	async _loadUserList() {
@@ -49,15 +117,15 @@ class App extends Component {
 	  .catch((error) => {
 	    return [];
 	  });
-	}
+	},
 
-	_getOptionList() {
-		return this.refs['OPTIONLIST'];
-	}
 
 	updateTrashCans(refer){
 		trashCans = refer.getTrashCans();
-	}
+		
+		this.setState({showCamera: true});
+		
+	},
 
 	nextPage(value)
 	{
@@ -86,53 +154,51 @@ class App extends Component {
 	    	},
 	    	callback:this.updateTrashCans,
 	    });
-  	}
+  	},
 
 	render(){
-		
+		console.log("rendering camera " + this.state.showCamera);
+		//this.state.showCamera = true;
 		return (
-
-			<View style={styles.optionBox}>
-		      <Select
-		        width={250}
-		        ref="SELECT1"
-		        optionListRef={this._getOptionList.bind(this)}
-		        defaultValue="Select a Username"
-		        onSelect={
-		        	(value) => {
-		        		//console.log(value);
-		        		this.nextPage(value)
-		        	}
-		        }
-		      >
-		      	{this.state.userList.map(user => (
-
-
-		        <Option key = {user.id}>{user.first_name + ' ' + user.last_name}</Option>
-
-		      	))}
-		      </Select>
-		      <OptionList ref="OPTIONLIST"/>
-			</View>
+			this.renderCamera()
 		);
-	}
-}
-
-var styles = StyleSheet.create({
-	optionBox: {
-		flex: 1,
-		justifyContent: 'center',
-		alignItems: 'center'
 	},
-  container: {
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    right: 0,
-    bottom: 0,
-    justifyContent: 'flex-end',
-    alignItems: 'center',
-  },
 });
 
-module.exports = App;
+var styles = StyleSheet.create({
+    container: {
+        flex: 1,
+        justifyContent: "center",
+        alignItems: "center",
+        backgroundColor: "transparent",
+    },
+    buttonBar: {
+        flexDirection: "row",
+        position: "absolute",
+        top: 44,
+        right: 0,
+        left: 0,
+        justifyContent: "center"
+    },
+    button: {
+        padding: 10,
+        color: "#FFFFFF",
+        borderWidth: 1,
+        borderColor: "#FFFFFF",
+        margin: 5
+    },
+    buttonText: {
+        color: "#FFFFFF"
+    },
+    bgImageWrapper: {
+        position: 'absolute',
+        top: 0, bottom: 0, left: 0, right: 0
+    },
+    bgImage: {
+        flex: 1,
+        resizeMode: "stretch"
+    },
+
+});
+
+module.exports = PhoneApp;
