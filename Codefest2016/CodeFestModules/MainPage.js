@@ -8,6 +8,7 @@ var {
   TouchableOpacity,
   TouchableHighlight,
   Alert,
+  TextInput,
 } = React;
 
 var MapView = require('react-native-maps');
@@ -21,7 +22,7 @@ var { width, height } = Dimensions.get('window');
 var Button = require('react-native-button');
 var BarcodeScanner = require('./BarcodeScanner');
 var Immutable = require('immutable');
-
+var SearchBar = require('react-native-search-bar');
 
 const ASPECT_RATIO = width / height;
 const LATITUDE = 40.440624;
@@ -79,25 +80,17 @@ var MainPage = React.createClass({
 
 
   navigateLogout: function(){
-    trashCans = this.getCans();
-    this.props.navigator.pop({
-      title: "Select User",
-      navigationBarHidden: true,
-      component:LogoutView,
-      passProps: {'server': this.props.server,
-         'userList': this.props.userList,
-         'trashCans': trashCans,
-      } 
-    })
+    this.updateCans();
+    this.props.navigator.popToTop()
   },
 
-  updateCans: function(marker){
-    this.refs.trashCans.updateMarker(marker)
+  updateCans: function(){
+    this.props.route.callback(this.refs.trashCans);
   },
 
   getCans: function(){
     var trash = this.refs.trashCans.getTrashCans();
-    console.log(trash);
+    //console.log(trash);
     return trash;
   },
 
@@ -124,6 +117,12 @@ var MainPage = React.createClass({
     }
   },
 
+  refresh(){
+    this.refs.trashCans.refreshCans();
+    this.setTimeout(function() {
+      this.setState({showMap: true});
+    }.bind(this), 5000);
+  },
 
   shouldComponentUpdate: function(nextProps, nextState) {
     return nextState !== this.state;
@@ -133,12 +132,13 @@ var MainPage = React.createClass({
 
 
   componentDidMount: function() {
-    console.log(CustomMarkers);
+    
     this.setTimeout(function() {
       this.setState({showMap: true});
     }.bind(this), 250);
   },
   render() {
+    console.log("RENDERING MAIN");
     return (
 
     <View style={styles.mainContainer}>
@@ -150,7 +150,7 @@ var MainPage = React.createClass({
               onPress={() => this.navigateLogout()}/>}
       centerButton1={
           <SearchIcon
-              onPress={() => console.log(this.getCans())}/>}
+              onPress={() => this.refresh()}/>}
       centerButton2={
           <ScanIcon
               onPress={() => this.navigateBarcodeScanner()}/>}

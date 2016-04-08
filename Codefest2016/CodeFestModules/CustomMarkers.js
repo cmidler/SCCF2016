@@ -49,6 +49,42 @@ var CustomMarkers = React.createClass({
     }
   },
 
+  refreshCans(){
+    var url = 'http://' + this.props.server + ':8000/listcans'
+      return fetch(url)
+        .then((response) => response.json())
+        .then((json) => {
+          var t = Immutable.List();
+          for(var i = 0; i<json.result.length; i++)
+          //for(var i = 0; i<10; i++)
+          {
+            var can = Immutable.Map(json.result[i]);
+            t = t.push(can);
+
+            //find can, if not same state then update
+            for(var j = 0; j< this.state.trashCans.size; j++)
+            {
+              var oldCan = this.state.trashCans.get(j);
+              if(oldCan.get('id') == json.result[i].id)
+              {
+                if (oldCan.get('state') != json.result[i].state)
+                {
+                  this.setMarkerUpdateFlag(can);
+                  var changedTrash = this.state.trashCans.set(j,can);
+                  this.setState({trashCans: changedTrash});
+                }
+                break;
+              }
+            }
+
+          }
+          this.setState({trashCans:t});
+      })
+      .catch((error) => {
+        console.log("Error getting trashcans");
+      });
+  },
+
   getTrashCans(){
     return this.state.trashCans;
   },

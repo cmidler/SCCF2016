@@ -141,7 +141,7 @@ var ChooseType = React.createClass({
   },
 
 	render() {
-    
+      
 	    return (
 	    	<View style={styles.container}>
             <Text style={styles.topText}>Can # {this.props.canId}</Text>

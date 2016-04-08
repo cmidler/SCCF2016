@@ -18,12 +18,14 @@
 		139FDEF61B0652A700C62182 /* libRCTWebSocket.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 139FDEF41B06529B00C62182 /* libRCTWebSocket.a */; };
 		13B07FBC1A68108700A75B9A /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB01A68108700A75B9A /* AppDelegate.m */; settings = {COMPILER_FLAGS = "-w"; }; };
 		13B07FBD1A68108700A75B9A /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB11A68108700A75B9A /* LaunchScreen.xib */; };
-		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; settings = {COMPILER_FLAGS = "-w"; }; };
 		146834051AC3E58100842450 /* libReact.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 146834041AC3E56700842450 /* libReact.a */; };
 		832341BD1AAA6AB300B99B32 /* libRCTText.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 832341B51AAA6A8300B99B32 /* libRCTText.a */; };
 		8FC82A9E8B2E4E358245EE9E /* libRNSearchBar.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 0E2E40BF864A466D926720DD /* libRNSearchBar.a */; };
 		BAFD7BA06C864B498BD90D9A /* libAirMaps.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 0D2A4AF1E4A74770A3F28C1D /* libAirMaps.a */; };
+		DCEC5C731CB8043E00760305 /* ipad-splash.png in Resources */ = {isa = PBXBuildFile; fileRef = DCEC5C711CB8043E00760305 /* ipad-splash.png */; };
+		DCEC5C741CB8043E00760305 /* splash.png in Resources */ = {isa = PBXBuildFile; fileRef = DCEC5C721CB8043E00760305 /* splash.png */; };
+		DCEC5C781CB80B0600760305 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = DCEC5C771CB80B0600760305 /* Images.xcassets */; };
 		DCF358D41CB3078400441EB0 /* ios in Resources */ = {isa = PBXBuildFile; fileRef = DCF358D31CB3078400441EB0 /* ios */; };
 		F9DC7A30A833499D9818E9C4 /* libRCTCamera.a in Frameworks */ = {isa = PBXBuildFile; fileRef = CA484A40BAA642A9980D3D96 /* libRCTCamera.a */; };
 /* End PBXBuildFile section */
@@ -147,7 +149,6 @@
 		13B07FAF1A68108700A75B9A /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AppDelegate.h; path = Codefest2016/AppDelegate.h; sourceTree = "<group>"; };
 		13B07FB01A68108700A75B9A /* AppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AppDelegate.m; path = Codefest2016/AppDelegate.m; sourceTree = "<group>"; };
 		13B07FB21A68108700A75B9A /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/LaunchScreen.xib; sourceTree = "<group>"; };
-		13B07FB51A68108700A75B9A /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = Codefest2016/Images.xcassets; sourceTree = "<group>"; };
 		13B07FB61A68108700A75B9A /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = Codefest2016/Info.plist; sourceTree = "<group>"; };
 		13B07FB71A68108700A75B9A /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = Codefest2016/main.m; sourceTree = "<group>"; };
 		146833FF1AC3E56700842450 /* React.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = React.xcodeproj; path = "../node_modules/react-native/React/React.xcodeproj"; sourceTree = "<group>"; };
@@ -156,6 +157,9 @@
 		78C398B01ACF4ADC00677621 /* RCTLinking.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTLinking.xcodeproj; path = "../node_modules/react-native/Libraries/LinkingIOS/RCTLinking.xcodeproj"; sourceTree = "<group>"; };
 		832341B01AAA6A8300B99B32 /* RCTText.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTText.xcodeproj; path = "../node_modules/react-native/Libraries/Text/RCTText.xcodeproj"; sourceTree = "<group>"; };
 		CA484A40BAA642A9980D3D96 /* libRCTCamera.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libRCTCamera.a; sourceTree = "<group>"; };
+		DCEC5C711CB8043E00760305 /* ipad-splash.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "ipad-splash.png"; path = "Codefest2016/ipad-splash.png"; sourceTree = "<group>"; };
+		DCEC5C721CB8043E00760305 /* splash.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = splash.png; path = Codefest2016/splash.png; sourceTree = "<group>"; };
+		DCEC5C771CB80B0600760305 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = Codefest2016/Images.xcassets; sourceTree = "<group>"; };
 		DCF358D31CB3078400441EB0 /* ios */ = {isa = PBXFileReference; lastKnownFileType = folder; name = ios; path = "../node_modules/react-native-maps/ios"; sourceTree = "<group>"; };
 		FB6FA3B53FFB43D38916E26C /* RCTCamera.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = RCTCamera.xcodeproj; path = "../node_modules/react-native-camera/ios/RCTCamera.xcodeproj"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -267,10 +271,12 @@
 		13B07FAE1A68108700A75B9A /* Codefest2016 */ = {
 			isa = PBXGroup;
 			children = (
+				DCEC5C771CB80B0600760305 /* Images.xcassets */,
 				008F07F21AC5B25A0029DE68 /* main.jsbundle */,
 				13B07FAF1A68108700A75B9A /* AppDelegate.h */,
 				13B07FB01A68108700A75B9A /* AppDelegate.m */,
-				13B07FB51A68108700A75B9A /* Images.xcassets */,
+				DCEC5C711CB8043E00760305 /* ipad-splash.png */,
+				DCEC5C721CB8043E00760305 /* splash.png */,
 				13B07FB61A68108700A75B9A /* Info.plist */,
 				13B07FB11A68108700A75B9A /* LaunchScreen.xib */,
 				13B07FB71A68108700A75B9A /* main.m */,
@@ -604,9 +610,11 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				DCEC5C731CB8043E00760305 /* ipad-splash.png in Resources */,
+				DCEC5C781CB80B0600760305 /* Images.xcassets in Resources */,
 				DCF358D41CB3078400441EB0 /* ios in Resources */,
-				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
 				13B07FBD1A68108700A75B9A /* LaunchScreen.xib in Resources */,
+				DCEC5C741CB8043E00760305 /* splash.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -788,6 +796,7 @@
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
+				DEAD_CODE_STRIPPING = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
@@ -813,6 +822,7 @@
 					"$(SRCROOT)/../node_modules/react-native-search-bar/**",
 				);
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				LIBRARY_SEARCH_PATHS = "@(inherited)";
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
@@ -838,6 +848,7 @@
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = YES;
+				DEAD_CODE_STRIPPING = NO;
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
@@ -856,6 +867,7 @@
 					"$(SRCROOT)/../node_modules/react-native-search-bar/**",
 				);
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				LIBRARY_SEARCH_PATHS = "@(inherited)";
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
 				VALIDATE_PRODUCT = YES;

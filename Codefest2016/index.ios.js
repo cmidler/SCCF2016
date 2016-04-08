@@ -5,26 +5,41 @@ var {
   NavigatorIOS,
   StyleSheet
 } = React;
-var Immutable = require('immutable');
-var App = require('./App');
 
-const server = '192.168.1.9';
+var App = require('./App');
+var PhoneApp = require('./PhoneApp');
+const server = '128.237.219.218';
 
 var Codefest2016 = React.createClass({
+
   render() {
-    return(
-      <NavigatorIOS
-        style = {styles.container}
-        initialRoute={{
-          title: "Select User",
-          navigationBarHidden: true,
-          component:App,
-          passProps: {'server': server, 
-          'userList': [],
-          'trashCans': Immutable.List(),
-        }
-      }}/>
-    );
+    console.log(this.props.isSimulator);
+    if(this.props.isSimulator)
+    {
+      return(
+        <NavigatorIOS
+          style = {styles.container}
+          initialRoute={{
+            title: "Select User",
+            navigationBarHidden: true,
+            component:App,
+            passProps: {'server': server}
+        }}/>
+      );
+    }
+    else
+    {
+      return(
+        <NavigatorIOS
+          style = {styles.container}
+          initialRoute={{
+            title: "Select User",
+            navigationBarHidden: true,
+            component:PhoneApp,
+            passProps: {'server': server}
+        }}/>
+      );
+    }
     //return <App />
   },
 });

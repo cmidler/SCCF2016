@@ -13,11 +13,12 @@ import DropDown, {
 } from 'react-native-selectme';
 
 var MainPage = require('./CodeFestModules/MainPage');
-
+var Immutable = require('immutable');
+var trashCans = Immutable.List()
 class App extends Component {
 
 	componentWillMount(){
-		if (this.props.userList.length == 0)
+		if (this.state.userList.length == 0)
     		this._loadUserList();
   	}
 
@@ -25,10 +26,12 @@ class App extends Component {
 	    super(props);
 
 	    this.state = {
-	      userList: []
+	      userList: [],
 	    };
-
+	    this.updateTrashCans = this.updateTrashCans.bind(this);
   	}
+
+  	
 
 
   	//get all trash cans and parse into lat lons
@@ -41,7 +44,7 @@ class App extends Component {
 	    .then((json) => {
 
 			this.setState({userList:json.result});
-			console.log("user list is " + userList)
+			//console.log("user list is " + userList)
 			return json.result;
 	  })
 	  .catch((error) => {
@@ -51,6 +54,10 @@ class App extends Component {
 
 	_getOptionList() {
 		return this.refs['OPTIONLIST'];
+	}
+
+	updateTrashCans(refer){
+		trashCans = refer.getTrashCans();
 	}
 
 	nextPage(value)
@@ -76,13 +83,14 @@ class App extends Component {
 	        passProps: {'user': user, 
 	        'server':this.props.server, 
 	        'userList': this.state.userList,
-	        'trashCans': this.props.trashCans,
-	    	}
+	        'trashCans': trashCans,
+	    	},
+	    	callback:this.updateTrashCans,
 	    });
   	}
 
 	render(){
-
+		
 		return (
 
 			<View style={styles.optionBox}>
@@ -93,7 +101,7 @@ class App extends Component {
 		        defaultValue="Select a Username"
 		        onSelect={
 		        	(value) => {
-		        		console.log(value);
+		        		//console.log(value);
 		        		this.nextPage(value)
 		        	}
 		        }
