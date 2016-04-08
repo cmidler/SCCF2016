@@ -72,13 +72,14 @@ var BarcodeScanner = React.createClass({
 			passProps: {'user': this.props.user, 
 			'server':this.props.server, 
 			'canId': canId,
-			'trashCans': this.props.trashCans},
-			callback: this.updateCans,
+			'trashCans': this.props.trashCans,
+			'refer': this.props.refer},
+
+			
    		})
 	},
 
 	render() {
-    
 	    return (
 	    	this.renderCamera()
 	    )

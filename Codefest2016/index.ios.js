@@ -7,7 +7,9 @@ var {
 } = React;
 var Immutable = require('immutable');
 var App = require('./App');
+
 const server = '192.168.1.9';
+
 var Codefest2016 = React.createClass({
   render() {
     return(

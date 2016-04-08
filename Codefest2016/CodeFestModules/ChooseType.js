@@ -34,8 +34,8 @@ var ChooseType = React.createClass({
       if(trashCans.get(i).get('id') == canId)
       {
         newMarker = trashCans.get(i).set('state',0);
-        console.log(this.props);
-        this.props.updateCans(newMarker);
+        //console.log(this.props);
+        this.props.refer.updateMarker(newMarker);
         break;
       }
     }
@@ -63,6 +63,24 @@ var ChooseType = React.createClass({
   },
 
   async pickupClicked (){
+
+    //this.state.trashCans = this.state.trashCans.set(marker,newMarker);
+    var newMarker = Immutable.Map();
+    var trashCans = this.props.trashCans;
+    var canId = this.props.canId;
+    console.log(trashCans);
+    for(var i = 0; i<trashCans.size; i++)
+    {
+      //console.log(this.state.trashCans.get(i));
+      if(trashCans.get(i).get('id') == canId)
+      {
+        newMarker = trashCans.get(i).set('state',1);
+        //console.log(this.props);
+        this.props.refer.updateMarker(newMarker);
+        break;
+      }
+    }
+
     var url = 'http://' + this.props.server + ':8000/trash_drop'
     fetch(url, {
       method: 'POST',
@@ -85,7 +103,23 @@ var ChooseType = React.createClass({
   },
 
   async emergencyClicked (){
-    
+    //this.state.trashCans = this.state.trashCans.set(marker,newMarker);
+    var newMarker = Immutable.Map();
+    var trashCans = this.props.trashCans;
+    var canId = this.props.canId;
+    console.log(trashCans);
+    for(var i = 0; i<trashCans.size; i++)
+    {
+      //console.log(this.state.trashCans.get(i));
+      if(trashCans.get(i).get('id') == canId)
+      {
+        newMarker = trashCans.get(i).set('state',2);
+        //console.log(this.props);
+        this.props.refer.updateMarker(newMarker);
+        break;
+      }
+    }
+
     var url = 'http://' + this.props.server + ':8000/trash_emergency'
     fetch(url, {
       method: 'POST',

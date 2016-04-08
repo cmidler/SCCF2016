@@ -65,8 +65,8 @@ var MainPage = React.createClass({
       navigationBarHidden: true,
       passProps: {'user': this.props.user, 
       'server':this.props.server,
-      'trashCans': trashCans},
-      callback: this.updateCans,
+      'trashCans': trashCans,
+      'refer': this.refs.trashCans},
    })
   },
 
@@ -144,7 +144,7 @@ var MainPage = React.createClass({
               onPress={() => this.navigateLogout()}/>}
       centerButton1={
           <SearchIcon
-              onPress={() => this.refs.testFunc.testFunction()}/>}
+              onPress={() => console.log(this.getCans())}/>}
       centerButton2={
           <ScanIcon
               onPress={() => this.navigateBarcodeScanner()}/>}
