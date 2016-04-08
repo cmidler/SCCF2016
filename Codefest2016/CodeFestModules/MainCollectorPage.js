@@ -33,7 +33,7 @@ const LONGITUDE = -79.995888;
 const LATITUDE_DELTA = 0.0025;
 const LONGITUDE_DELTA = LATITUDE_DELTA * ASPECT_RATIO;
 
-import LogoutIcon from '../components/Logout';
+import LogoutIcon from '../components/LogoutIpad';
 import SearchIcon from '../components/Search';
 import ScanIcon from '../components/Scan';
 import ListInactiveIcon from '../components/List';
@@ -225,12 +225,12 @@ var styles = StyleSheet.create({
   sideMenuTitleBar:{
       // width: 50,
       alignSelf: 'stretch',
-      height: 75,
+      height: 85,
       backgroundColor: '#3e3e3e',
   },
   sideMenuLogo:{
       alignSelf: 'stretch',
-      height: 150,
+      height: 100,
       // backgroundColor: 'red',
       backgroundColor: '#29323d',
   },
@@ -268,7 +268,9 @@ var styles = StyleSheet.create({
   sideMenuLogoParent:{
   },
   logoImage:{
-
+    marginTop: 12,
+    width: 232,
+    height: 90,
   },
 
   sideMenuText:{
