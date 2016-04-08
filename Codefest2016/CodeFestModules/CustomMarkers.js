@@ -27,8 +27,6 @@ updateCustomMarker =1;
 
 var CustomMarkers = React.createClass({
 
-
-
   updateMarker(marker){
     console.log(marker.get('id'));
     for(var i = 0; i<this.state.trashCans.size; i++)
@@ -43,7 +41,7 @@ var CustomMarkers = React.createClass({
           this.setState({trashCans: t});
           console.log("setting state for trashCan " + marker.get('id'));
         }
-        
+
         break;
       }
     }
@@ -105,7 +103,7 @@ var CustomMarkers = React.createClass({
       return true;
     }
   },
-  
+
 
   getInitialState() {
     return {
@@ -260,7 +258,16 @@ var CustomMarkers = React.createClass({
           //for(var i = 0; i<10; i++)
           {
             var can = Immutable.Map(json.result[i]);
-            t = t.push(can);
+            // console.log(can.get('state'));
+            if (this.props.device == 'iPad') {
+              var canState = can.get('state');
+              if (canState == 1 || canState == 2) {
+                t = t.push(can);
+              }
+            } else {
+              t = t.push(can);
+            }
+            // t = t.push(can);
           }
           this.setState({trashCans:t});
 
@@ -275,6 +282,8 @@ var CustomMarkers = React.createClass({
 
 
   render() {
+
+    // filter for pickups if Collector / isIpad
 
     return (
       <MapView

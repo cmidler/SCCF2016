@@ -14,9 +14,12 @@ import DropDown, {
 } from 'react-native-selectme';
 
 var MainPage = require('./CodeFestModules/MainPage');
+var MainCollectorPage = require('./CodeFestModules/MainCollectorPage')
 var Immutable = require('immutable');
-var trashCans = Immutable.List();
 var SplashImage = require('./images/splash.png');
+var Device = require('react-native-device');
+var trashCans = Immutable.List()
+
 class App extends Component {
 
 	componentWillMount(){
@@ -88,6 +91,7 @@ class App extends Component {
 				break;
 			}
 		}
+
 		console.log(user);
 		var cb = this.updateTrashCans;
 		if(this.props.mainTab == 'barcode')
@@ -95,17 +99,36 @@ class App extends Component {
 			cb = this.props.route.callback;
 			trashCans = this.props.trashCans;
 		}
-	  	this.props.navigator.push({
-	        title: 'Main Page',
-	        component: MainPage,
-	        navigationBarHidden: true,
-	        passProps: {'user': user, 
-	        'server':this.props.server, 
-	        'userList': this.state.userList,
-	        'trashCans': trashCans,
-	    	},
-	    	callback:cb,
-	    });
+
+	    if (Device.isIpad()){
+		  	this.props.navigator.push({
+		        title: 'Main Page',
+		        component: MainCollectorPage,
+		        navigationBarHidden: true,
+		        passProps: {'user': user,
+		        'server':this.props.server,
+		        'userList': this.state.userList,
+		        'trashCans': trashCans,
+	          'device' : 'iPad',
+		    	},
+		    	callback:this.updateTrashCans,
+		    });
+	    } else {
+
+		  	this.props.navigator.push({
+		        title: 'Main Page',
+		        component: MainPage,
+		        navigationBarHidden: true,
+		        passProps: {'user': user,
+		        'server':this.props.server,
+		        'userList': this.state.userList,
+		        'trashCans': trashCans,
+	          'device' : 'iPhone',
+		    	},
+		    	callback:cb,
+		    });
+	    }
+
   	}
 
 	render(){

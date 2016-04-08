@@ -20,6 +20,7 @@
 		13B07FBD1A68108700A75B9A /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB11A68108700A75B9A /* LaunchScreen.xib */; };
 		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; settings = {COMPILER_FLAGS = "-w"; }; };
 		146834051AC3E58100842450 /* libReact.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 146834041AC3E56700842450 /* libReact.a */; };
+		805474DB1CB8161500566A8B /* DeviceUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = 805474DA1CB8161500566A8B /* DeviceUtil.m */; };
 		832341BD1AAA6AB300B99B32 /* libRCTText.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 832341B51AAA6A8300B99B32 /* libRCTText.a */; };
 		8FC82A9E8B2E4E358245EE9E /* libRNSearchBar.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 0E2E40BF864A466D926720DD /* libRNSearchBar.a */; };
 		BAFD7BA06C864B498BD90D9A /* libAirMaps.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 0D2A4AF1E4A74770A3F28C1D /* libAirMaps.a */; };
@@ -155,6 +156,8 @@
 		27B69B5CF3084B3C9CA77128 /* RNSearchBar.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = RNSearchBar.xcodeproj; path = "../node_modules/react-native-search-bar/RNSearchBar.xcodeproj"; sourceTree = "<group>"; };
 		4DF9DF42072D4F58B46172A2 /* AirMaps.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = AirMaps.xcodeproj; path = "../node_modules/react-native-maps/ios/AirMaps.xcodeproj"; sourceTree = "<group>"; };
 		78C398B01ACF4ADC00677621 /* RCTLinking.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTLinking.xcodeproj; path = "../node_modules/react-native/Libraries/LinkingIOS/RCTLinking.xcodeproj"; sourceTree = "<group>"; };
+		805474D91CB8161500566A8B /* DeviceUtil.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DeviceUtil.h; path = "../node_modules/react-native-device/DeviceUtil.h"; sourceTree = "<group>"; };
+		805474DA1CB8161500566A8B /* DeviceUtil.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DeviceUtil.m; path = "../node_modules/react-native-device/DeviceUtil.m"; sourceTree = "<group>"; };
 		832341B01AAA6A8300B99B32 /* RCTText.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTText.xcodeproj; path = "../node_modules/react-native/Libraries/Text/RCTText.xcodeproj"; sourceTree = "<group>"; };
 		CA484A40BAA642A9980D3D96 /* libRCTCamera.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libRCTCamera.a; sourceTree = "<group>"; };
 		DCEC5C711CB8043E00760305 /* ipad-splash.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "ipad-splash.png"; path = "Codefest2016/ipad-splash.png"; sourceTree = "<group>"; };
@@ -271,6 +274,8 @@
 		13B07FAE1A68108700A75B9A /* Codefest2016 */ = {
 			isa = PBXGroup;
 			children = (
+				805474D91CB8161500566A8B /* DeviceUtil.h */,
+				805474DA1CB8161500566A8B /* DeviceUtil.m */,
 				DCEC5C771CB80B0600760305 /* Images.xcassets */,
 				008F07F21AC5B25A0029DE68 /* main.jsbundle */,
 				13B07FAF1A68108700A75B9A /* AppDelegate.h */,
@@ -650,6 +655,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				805474DB1CB8161500566A8B /* DeviceUtil.m in Sources */,
 				13B07FBC1A68108700A75B9A /* AppDelegate.m in Sources */,
 				13B07FC11A68108700A75B9A /* main.m in Sources */,
 			);
@@ -751,6 +757,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.example.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = Codefest2016;
 				PROVISIONING_PROFILE = "";
+				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
 		};
@@ -774,6 +781,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.example.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = Codefest2016;
 				PROVISIONING_PROFILE = "";
+				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Release;
 		};
@@ -826,6 +834,7 @@
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
 		};
@@ -870,6 +879,7 @@
 				LIBRARY_SEARCH_PATHS = "@(inherited)";
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
 				VALIDATE_PRODUCT = YES;
 			};
 			name = Release;

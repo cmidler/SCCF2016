@@ -15,6 +15,8 @@ var trashCans = Immutable.List();
 var Button = require('react-native-button');
 var App = require('./App');
 var SplashImage = require('./images/splash.png');
+var Device = require('react-native-device');
+var MainCollectorPage = require('./CodeFestModules/MainCollectorPage')
 import Camera from 'react-native-camera';
 var PhoneApp = React.createClass ({
 
@@ -131,19 +133,36 @@ var PhoneApp = React.createClass ({
 
 	nextPage(user)
 	{
+		if (Device.isIpad()){
+		  	this.props.navigator.push({
+		        title: 'Main Page',
+		        component: MainCollectorPage,
+		        navigationBarHidden: true,
+		        passProps: {'user': user,
+		        'server':this.props.server,
+		        'userList': this.state.userList,
+		        'trashCans': trashCans,
+	          'device' : 'iPad',
+	          'mainTab': 'barcode',
+		    	},
+		    	callback:this.updateTrashCans,
+		    });
+	    } else {
 
-	  	this.props.navigator.push({
-	        title: 'Main Page',
-	        component: MainPage,
-	        navigationBarHidden: true,
-	        passProps: {'user': user, 
-	        'server':this.props.server, 
-	        'userList': this.state.userList,
-	        'trashCans': trashCans,
-	        'mainTab': 'barcode',
-	    	},
-	    	callback:this.updateTrashCans,
-	    });
+		  	this.props.navigator.push({
+		        title: 'Main Page',
+		        component: MainPage,
+		        navigationBarHidden: true,
+		        passProps: {'user': user,
+		        'server':this.props.server,
+		        'userList': this.state.userList,
+		        'trashCans': trashCans,
+	          'device' : 'iPhone',
+	          'mainTab': 'barcode',
+		    	},
+		    	callback:this.updateTrashCans,
+		    });
+	    }
   	},
 
 	render(){
