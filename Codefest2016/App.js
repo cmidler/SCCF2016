@@ -91,7 +91,10 @@ class App extends Component {
 		console.log(user);
 		var cb = this.updateTrashCans;
 		if(this.props.mainTab == 'barcode')
+		{
 			cb = this.props.route.callback;
+			trashCans = this.props.trashCans;
+		}
 	  	this.props.navigator.push({
 	        title: 'Main Page',
 	        component: MainPage,
