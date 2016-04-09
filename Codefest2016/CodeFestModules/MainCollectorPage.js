@@ -12,6 +12,7 @@ var {
   Menu,
   Image,
   Item,
+  TextInput,
 } = React;
 
 var MapView = require('react-native-maps');
@@ -28,8 +29,7 @@ var Immutable = require('immutable');
 var SearchBar = require('react-native-search-bar');
 var Radio = require('react-native-radio-button-classic');
 var Option = Radio.Option;
-var pickupCans = 0;
-var emergencyCans = 0;
+var CheckBox = require('react-native-checkbox');
 const SideMenu = require ('react-native-side-menu');
 
 const ASPECT_RATIO = width / height;
@@ -145,6 +145,7 @@ var MainPage = React.createClass({
         longitudeDelta: LONGITUDE_DELTA,
       },
       trashCans:Immutable.List(),
+      optionSelected: 2,
     };
   },
 
@@ -166,6 +167,11 @@ var MainPage = React.createClass({
   },
 
 
+  onSelect(index){
+    this.setState({
+      optionSelected: index + 1
+    });
+  },
 
 
   componentDidMount: function() {
@@ -217,17 +223,21 @@ var MainPage = React.createClass({
         </View>
 
         <View style={styles.sideMenuActions}>
-          <Text style={styles.sideMenuText}>Select one:</Text>
-          <Radio >
+          <Text style={styles.sideMenuHeaderText}>Select one:</Text>
+          <Radio onSelect={this.onSelect.bind(this)} defaultSelect={this.state.optionSelected - 1}>
             <Option color="gray" selectedColor="#008BEF">
               <Text style={styles.radioButtonText}>Set stop number to optimize your route</Text>
+              <View style={styles.sideMenuInputRow}>
+                <TextInput style={styles.radioTextInput} value={"25"}/>
+                <Text style={styles.sideMenuText}>Number of cans</Text>
+              </View>
             </Option>
             <Option color="gray" selectedColor="#008BEF">
               <Text style={styles.radioButtonText}>Add all cans to route</Text>
+
             </Option>
           </Radio>
-          <Text style={styles.sideMenuText}>Number of cans</Text>
-          <Text style={styles.sideMenuText}>Include all emergencies in this number</Text>
+
         </View>
 
         <View style={styles.sideMenuRouteAction}>
@@ -288,6 +298,10 @@ var styles = StyleSheet.create({
       backgroundColor: '#29323d',
   },
 
+  sideMenuInputRow:{
+      flexDirection: 'row'
+  },
+
   sideMenuStatusTextContainer:{
     marginTop: 40,
     marginLeft: 25,
@@ -321,6 +335,12 @@ var styles = StyleSheet.create({
       height: 100,
       backgroundColor: '#29323d',
   },
+  sideMenuHeaderText:{
+      fontSize: 16,
+      fontWeight: 'bold',
+      color: 'white',
+      marginLeft: 10,
+  },
   logoImageContainer:{
       // alignSelf: 'stretch',
   },
@@ -345,11 +365,24 @@ var styles = StyleSheet.create({
   radioButtonText:{
       color: 'white',
       marginTop: 10,
+      marginBottom: 10,
+      fontSize: 16,
+  },
+  radioTextInput:{
+      height: 40,
+      width: 40,
+      borderColor: 'white',
+      borderWidth: 1,
+      backgroundColor: 'white',
   },
   sideMenuText:{
       color: 'white',
+      marginLeft: 5,
   },
-
+  checkBox:{
+      color: 'white',
+      backgroundColor: 'white',
+  },
   container: {
     // position: 'absolute',
     position: 'relative',
