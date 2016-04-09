@@ -39,7 +39,7 @@ import ListActiveIcon from '../components/List-Active';
 import MapActiveIcon from '../components/Map-Active';
 
 
-
+var foo = 'hi';
 var MainPage = React.createClass({
   mixins: [TimerMixin],
 
@@ -59,7 +59,7 @@ var MainPage = React.createClass({
       'trashCans': this.getCans(),
       'refer': this.refs.trashCans,
       'server': this.props.server,
-      'user': this.props.user, 
+      'user': this.props.user,
      },
    })
  },
@@ -70,7 +70,7 @@ var MainPage = React.createClass({
       title: 'Barcode Scanner View',
       component: BarcodeScanner,
       navigationBarHidden: true,
-      passProps: {'user': this.props.user, 
+      passProps: {'user': this.props.user,
       'server':this.props.server,
       'trashCans': trashCans,
       'refer': this.refs.trashCans},
@@ -129,11 +129,11 @@ var MainPage = React.createClass({
     return nextState !== this.state;
   },
 
-  
+
 
 
   componentDidMount: function() {
-    
+
     this.setTimeout(function() {
       this.setState({showMap: true});
     }.bind(this), 250);
@@ -161,8 +161,8 @@ var MainPage = React.createClass({
           <ListInactiveIcon
               onPress={() => this.navigateItemListView()}/>}/>
       <View style={styles.container}>
-        <CustomMarkers 
-          server={this.props.server} 
+        <CustomMarkers
+          server={this.props.server}
           user = {this.props.user}
           trashCans = {this.props.trashCans}
           ref={'trashCans'}/>
@@ -187,7 +187,7 @@ var styles = StyleSheet.create({
     // justifyContent: 'flex-end',
     // alignItems: 'center',
   },
-  
+
   latlng: {
     width: 200,
     alignItems: 'stretch',

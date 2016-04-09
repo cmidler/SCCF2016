@@ -28,6 +28,8 @@ var Immutable = require('immutable');
 var SearchBar = require('react-native-search-bar');
 var Radio = require('react-native-radio-button-classic');
 var Option = Radio.Option;
+var pickupCans = 0;
+var emergencyCans = 0;
 const SideMenu = require ('react-native-side-menu');
 
 const ASPECT_RATIO = width / height;
@@ -46,28 +48,23 @@ import MapActiveIcon from '../components/Map-Active';
 import Button from 'apsl-react-native-button';
 // import SideMenu from 'react-native-thesidebar'
 
-class ContentView extends React.Component {
-  render() {
-    return (
-      <View style={styles.container}>
-        <Text style={styles.welcome}>
-          Welcome to React Native!
-        </Text>
-        <Text style={styles.instructions}>
-          To get started, edit index.ios.js
-        </Text>
-        <Text style={styles.instructions}>
-          Press Cmd+R to reload,{'\n'}
-          Cmd+Control+Z for dev menu
-        </Text>
-      </View>
-    );
-  }
-}
-
 var MainPage = React.createClass({
   mixins: [TimerMixin],
 
+  updateCanCount: function(trashCans){
+    var pickupCans = 0;
+    var emergencyCans = 0;
+    trashCans.map(function(can){
+        if (can.get('state') == 1) {
+          pickupCans += 1;
+        } else if (can.get('state') == 2) {
+          pickupCans += 1;
+          emergencyCans += 1;
+        }
+    })
+    this.setState({pickupCans: pickupCans});
+    this.setState({emergencyCans: emergencyCans});
+  },
   searchNumber : function(){
     return(
       <TextInput style={styles.searchInputStyle} />
@@ -209,11 +206,11 @@ var MainPage = React.createClass({
         <View style={styles.sideMenuStatusInfo}>
           <View style={styles.sideMenuStatusTextContainer}>
             <View style={styles.sideMenuStatusTextRow}>
-              <Text style={styles.sideMenuStatusNumber}>87</Text>
+              <Text style={styles.sideMenuStatusNumber}>{this.state.pickupCans}</Text>
               <Text style={styles.sideMenuStatusText}>Cans Ready for Pick-up</Text>
             </View>
             <View style={styles.sideMenuStatusTextRow}>
-              <Text style={styles.sideMenuStatusNumber}>11</Text>
+              <Text style={styles.sideMenuStatusNumber}>{this.state.emergencyCans}</Text>
               <Text style={styles.sideMenuStatusText}>Emergencies</Text>
             </View>
           </View>
@@ -243,6 +240,7 @@ var MainPage = React.createClass({
 
       <View style={styles.container}>
         <CustomMarkers
+          updateSideBarCanCount={this.updateCanCount.bind(this)}
           server={this.props.server}
           user = {this.props.user}
           trashCans = {this.props.trashCans}

@@ -26,7 +26,9 @@ updateLon =0;
 updateCustomMarker =1;
 
 var CustomMarkers = React.createClass({
-
+  propTypes :{
+    updateSideBarCanCount: React.PropTypes.func,
+  },
   updateMarker(marker){
     console.log(marker.get('id'));
     for(var i = 0; i<this.state.trashCans.size; i++)
@@ -283,7 +285,7 @@ var CustomMarkers = React.createClass({
             // t = t.push(can);
           }
           this.setState({trashCans:t});
-
+          this.props.updateSideBarCanCount(t);
           //disable custom marker updates until action is taken
           updateCustomMarker =0;
       })
