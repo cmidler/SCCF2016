@@ -37,6 +37,7 @@ var styles = StyleSheet.create({
       fontWeight: 'bold',
       color: 'white',
       marginTop : 3,
+      marginLeft: 3,
       textAlign: 'left',
   }
 })

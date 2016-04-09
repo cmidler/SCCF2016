@@ -43,6 +43,7 @@ var DisplayLatLng = React.createClass({
   },
 
   onPress(e) {
+    console.log(e.nativeEvent.coordinate);
     var { editing } = this.state;
     if (!editing) {
       this.setState({
@@ -72,23 +73,12 @@ var DisplayLatLng = React.createClass({
           initialRegion={this.state.region}
           onPress={this.onPress}
         >
-          {this.state.polygons.map(polygon => (
-            <MapView.Polygon
-              key={polygon.id}
-              coordinates={polygon.coordinates}
-              strokeColor="#F00"
-              fillColor="rgba(255,0,0,0.5)"
-              strokeWidth={1}
-            />
-          ))}
-          {this.state.editing && (
-            <MapView.Polygon
-              coordinates={this.state.editing.coordinates}
-              strokeColor="#000"
-              fillColor="rgba(255,0,0,0.5)"
-              strokeWidth={1}
-            />
-          )}
+        <MapView.Polyline
+          strokeColor="#F00"
+          strokeWidth={3}
+          coordinates={[{latitude: 37.79163963262899, longitude: -122.435051531929},{latitude: 37.78110045582041, longitude: -122.4375470913915}]}
+          />
+
         </MapView>
         <View style={styles.buttonContainer}>
           {this.state.editing && (

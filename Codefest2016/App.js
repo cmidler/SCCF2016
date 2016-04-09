@@ -16,6 +16,7 @@ var MainPage = require('./CodeFestModules/MainPage');
 var MainCollectorPage = require('./CodeFestModules/MainCollectorPage')
 var Immutable = require('immutable');
 var Device = require('react-native-device');
+var PolygonCreator = require('./examples/PolygonCreator');
 var trashCans = Immutable.List()
 class App extends Component {
 
@@ -33,7 +34,7 @@ class App extends Component {
 	    this.updateTrashCans = this.updateTrashCans.bind(this);
   	}
 
-  	
+
 
 
   	//get all trash cans and parse into lat lons

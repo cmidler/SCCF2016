@@ -88,6 +88,19 @@ var CustomMarkers = React.createClass({
   },
 
   componentWillMount(){
+    var url = 'http://' + this.props.server +':8000/route?user_id=1';
+    fetch(url)
+       .then((response) => {console.log(response); return response.json()})
+       .then((json) => {
+        var points = json.result;
+        console.log(points);
+        this.setState({points: points});
+        // process points into array of lat longs
+        //this.set_state
+     })
+     .catch((error) => {
+       console.log('Error fetching route: ' + error);
+     });
     if(this.props.trashCans.size == 0)
       this._loadTrashCans();
     else
@@ -293,6 +306,11 @@ var CustomMarkers = React.createClass({
           region={this.state.region}
           onRegionChange={this.onRegionChange}
         >
+        <MapView.Polyline
+          strokeColor="#2e80db"
+          strokeWidth={3}
+          coordinates={this.state.points}
+          />
         {this.state.trashCans.map(marker => (
               <MapView.Marker
                 coordinate={{latitude:marker.get('lat'), longitude:marker.get('lon')}}

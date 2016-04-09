@@ -11,6 +11,7 @@ var {
   TextInput,
   Menu,
   Image,
+  Item,
 } = React;
 
 var MapView = require('react-native-maps');
@@ -25,6 +26,8 @@ var { width, height } = Dimensions.get('window');
 var BarcodeScanner = require('./BarcodeScanner');
 var Immutable = require('immutable');
 var SearchBar = require('react-native-search-bar');
+var Radio = require('react-native-radio-button-classic');
+var Option = Radio.Option;
 const SideMenu = require ('react-native-side-menu');
 
 const ASPECT_RATIO = width / height;
@@ -70,6 +73,24 @@ var MainPage = React.createClass({
       <TextInput style={styles.searchInputStyle} />
     )
   },
+  handlePosition: function(position) {
+   console.log(position.coords.latitude + ', ' + position.coords.longitude);
+
+   var url = 'http://' + this.props.server + ':8000/location'
+     fetch(url, {
+       method: 'POST',
+       body: JSON.stringify({
+         'id': this.props.user.id,
+         'lat': position.coords.latitude,
+         'lon': position.coords.longitude,
+       })
+     });
+  },
+
+  handlePositionError: function(error) {
+    console.log(error.message);
+  },
+
 
   navigateItemListView: function(){
    this.props.navigator.push({
@@ -151,9 +172,16 @@ var MainPage = React.createClass({
 
 
   componentDidMount: function() {
+    this.setInterval( () => {
+         navigator.geolocation.getCurrentPosition(
+           this.handlePosition, this.handlePositionError, {enableHighAccuracy: true, timeout: 20000, maximumAge: 1000}
+         );
+       }, 5000);
 
     this.setTimeout(function() {
       this.setState({showMap: true});
+
+
     }.bind(this), 250);
   },
   render() {
@@ -179,16 +207,30 @@ var MainPage = React.createClass({
         </View>
 
         <View style={styles.sideMenuStatusInfo}>
-          <Text style={styles.sideMenuText}>Cans Ready for Pick-up</Text>
-          <Text style={styles.sideMenuText}>Emergencies</Text>
+          <View style={styles.sideMenuStatusTextContainer}>
+            <View style={styles.sideMenuStatusTextRow}>
+              <Text style={styles.sideMenuStatusNumber}>87</Text>
+              <Text style={styles.sideMenuStatusText}>Cans Ready for Pick-up</Text>
+            </View>
+            <View style={styles.sideMenuStatusTextRow}>
+              <Text style={styles.sideMenuStatusNumber}>11</Text>
+              <Text style={styles.sideMenuStatusText}>Emergencies</Text>
+            </View>
+          </View>
         </View>
 
         <View style={styles.sideMenuActions}>
           <Text style={styles.sideMenuText}>Select one:</Text>
-          <Text style={styles.sideMenuText}>Set stop number to optimize your route</Text>
+          <Radio >
+            <Option color="gray" selectedColor="#008BEF">
+              <Text style={styles.radioButtonText}>Set stop number to optimize your route</Text>
+            </Option>
+            <Option color="gray" selectedColor="#008BEF">
+              <Text style={styles.radioButtonText}>Add all cans to route</Text>
+            </Option>
+          </Radio>
           <Text style={styles.sideMenuText}>Number of cans</Text>
           <Text style={styles.sideMenuText}>Include all emergencies in this number</Text>
-          <Text style={styles.sideMenuText}>Add all cans to route</Text>
         </View>
 
         <View style={styles.sideMenuRouteAction}>
@@ -247,6 +289,35 @@ var styles = StyleSheet.create({
       height: 150,
       backgroundColor: '#29323d',
   },
+
+  sideMenuStatusTextContainer:{
+    marginTop: 40,
+    marginLeft: 25,
+  },
+
+  sideMenuStatusNumberColumn:{
+      flexDirection: 'column',
+  },
+  sideMenuStatusTextRow:{
+      marginTop: -10,
+      flexDirection: 'row',
+  },
+
+  sideMenuStatusNumber:{
+    fontWeight: 'bold',
+    fontSize: 25,
+    color: 'white',
+    marginRight: 5,
+    marginBottom: 15,
+  },
+
+  sideMenuStatusText:{
+    marginBottom: 10,
+    color: 'white',
+    textAlign: 'left',
+    fontSize: 16,
+    marginTop: 9,
+  },
   sideMenuRouteAction:{
       alignSelf:'stretch',
       height: 100,
@@ -273,6 +344,10 @@ var styles = StyleSheet.create({
     height: 90,
   },
 
+  radioButtonText:{
+      color: 'white',
+      marginTop: 10,
+  },
   sideMenuText:{
       color: 'white',
   },

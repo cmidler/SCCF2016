@@ -8,7 +8,8 @@ var {
 
 var App = require('./App');
 var PhoneApp = require('./PhoneApp');
-const server = '128.237.219.218';
+// const server = '128.237.219.218';
+const server = '127.0.0.1';
 
 var Codefest2016 = React.createClass({
 
