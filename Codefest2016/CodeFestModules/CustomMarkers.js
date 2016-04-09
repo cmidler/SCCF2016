@@ -25,6 +25,18 @@ updateLat =0;
 updateLon =0;
 updateCustomMarker =1;
 
+var sampleData =[{latitude : 40.443524,longitude:-79.995549},
+{latitude : 40.442977,longitude:-79.995528},
+{latitude : 40.441764,longitude:-79.996442},
+{latitude : 40.441548,longitude:-79.995517},
+{latitude : 40.440727,longitude:-79.996075},
+{latitude : 40.439743,longitude:-79.996418},
+{latitude : 40.43998,longitude:-79.998247},
+{latitude : 40.440821,longitude:-80.000195},
+{latitude : 40.439102,longitude:-80.001407},
+{latitude : 40.442723,longitude:-79.9991},
+{latitude : 40.443328,longitude:-79.996161}]
+
 var CustomMarkers = React.createClass({
   propTypes :{
     updateSideBarCanCount: React.PropTypes.func,
@@ -117,11 +129,8 @@ var CustomMarkers = React.createClass({
        .then((response) => {console.log(response); return response.json()})
        .then((json) => {
         points = json.result;
-        console.log('\nPOINTS:')
-        console.log(points);
         // console.log(points);
         // console.log('\nfuckity\n');
-        console.log('imma setting state...');
         updateCustomMarker = 1;
         this.setState({points: points});
         updateCustomMarker = 0;
@@ -131,6 +140,11 @@ var CustomMarkers = React.createClass({
      .catch((error) => {
        console.log('Error fetching route: ' + error);
      });
+
+    // uncomment this to generate sample data
+    // updateCustomMarker = 1;
+    // this.setState({points: sampleData});
+    // updateCustomMarker = 0;
   },
   getInitialState() {
     // this.getRoute();
