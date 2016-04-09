@@ -71,7 +71,7 @@ var MainPage = React.createClass({
     )
   },
   handlePosition: function(position) {
-   console.log(position.coords.latitude + ', ' + position.coords.longitude);
+  //  console.log(position.coords.latitude + ', ' + position.coords.longitude);
 
    var url = 'http://' + this.props.server + ':8000/location'
      fetch(url, {
@@ -114,6 +114,10 @@ var MainPage = React.createClass({
    })
   },
 
+  generateRoute(){
+      console.log('generate route called');
+      this.refs.trashCans.getRoute();
+  },
 
 
   navigateLogout: function(){
@@ -244,7 +248,7 @@ var MainPage = React.createClass({
         </View>
 
         <View style={styles.sideMenuRouteAction}>
-          <Button style={styles.routeButtonStyle}>
+          <Button style={styles.routeButtonStyle} onPress={this.generateRoute.bind(this)}>
             Route
           </Button>
         </View>

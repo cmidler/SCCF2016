@@ -71,6 +71,7 @@ var CustomMarkers = React.createClass({
                 {
                   this.setMarkerUpdateFlag(can);
                   var changedTrash = this.state.trashCans.set(j,can);
+                  console.log('what');
                   this.setState({trashCans: changedTrash});
                 }
                 break;
@@ -90,19 +91,8 @@ var CustomMarkers = React.createClass({
   },
 
   componentWillMount(){
-    var url = 'http://' + this.props.server +':8000/route?user_id=1';
-    fetch(url)
-       .then((response) => {console.log(response); return response.json()})
-       .then((json) => {
-        var points = json.result;
-        console.log(points);
-        this.setState({points: points});
-        // process points into array of lat longs
-        //this.set_state
-     })
-     .catch((error) => {
-       console.log('Error fetching route: ' + error);
-     });
+    // var url = 'http://' + this.props.server +':8000/route?user_id=1';
+
     if(this.props.trashCans.size == 0)
       this._loadTrashCans();
     else
@@ -119,8 +109,31 @@ var CustomMarkers = React.createClass({
     }
   },
 
-
+  getRoute: function(){
+    console.log('getroute called');
+    var url = 'http://' + this.props.server +':8000/route?user_id=1';
+    var points;
+    fetch(url)
+       .then((response) => {console.log(response); return response.json()})
+       .then((json) => {
+        points = json.result;
+        console.log('\nPOINTS:')
+        console.log(points);
+        // console.log(points);
+        // console.log('\nfuckity\n');
+        console.log('imma setting state...');
+        updateCustomMarker = 1;
+        this.setState({points: points});
+        updateCustomMarker = 0;
+        // process points into array of lat longs
+        //this.set_state
+     })
+     .catch((error) => {
+       console.log('Error fetching route: ' + error);
+     });
+  },
   getInitialState() {
+    // this.getRoute();
     return {
       region: {
         latitude: LATITUDE,
@@ -184,7 +197,9 @@ var CustomMarkers = React.createClass({
   },
 
   async pickupClicked (marker){
-    console.log('Pickup clicked for ' + marker.id);
+    // console.log('Pickup clicked for ' + marker.id);
+    console.log(marker.get('lat') + ',' + marker.get('lon'));
+
     if (marker.get('state') == 1)
       return;
 
@@ -219,7 +234,8 @@ var CustomMarkers = React.createClass({
   },
 
   async emergencyClicked (marker){
-    console.log('Emergency clicked for ' + marker.id);
+    console.log(marker.get('lat') + ',' + marker.get('lon'));
+    // console.log('Emergency clicked for ' + marker.id);
     if (marker.get('state') == 2)
       return;
 
@@ -297,7 +313,10 @@ var CustomMarkers = React.createClass({
 
 
   render() {
-
+    // console.log(this.state.points);
+    // if (this.state.points == undefined) {
+      // this.getRoute();
+    // }
     // filter for pickups if Collector / isIpad
 
     return (
