@@ -124,7 +124,10 @@ var MainPage = React.createClass({
   updateCans: function(){
     this.props.route.callback(this.refs.trashCans);
   },
-
+  navigateLogout: function(){
+    this.updateCans();
+    this.props.navigator.popToTop()
+  },
   getCans: function(){
     var trash = this.refs.trashCans.getTrashCans();
     //console.log(trash);
@@ -197,7 +200,7 @@ var MainPage = React.createClass({
       <View style={styles.sideMenu}>
 
         <View style={styles.sideMenuTitleBar}>
-          <LogoutIcon />
+          <LogoutIcon onPress={() => this.navigateLogout()}/>
         </View>
 
         <View style={styles.sideMenuLogo}>
