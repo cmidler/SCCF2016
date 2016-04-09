@@ -306,14 +306,12 @@ var TrashPandaListView = React.createClass({
             Last Pick-up
           </Button>
         </View>
-        <View>
         <ListView
           style={styles.listContainer}
           dataSource={this.state.dataSource}
           renderRow={this._renderRow}
           // renderRow={this.renderContent}
         />
-        </View>
       </View>
     );
   },

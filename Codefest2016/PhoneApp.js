@@ -15,6 +15,8 @@ var trashCans = Immutable.List();
 var Button = require('react-native-button');
 var App = require('./App');
 var SplashImage = require('./images/splash.png');
+var Device = require('react-native-device');
+var MainCollectorPage = require('./CodeFestModules/MainCollectorPage')
 import Camera from 'react-native-camera';
 var PhoneApp = React.createClass ({
 
@@ -34,10 +36,6 @@ var PhoneApp = React.createClass ({
   	renderCamera() {
 	    if(this.state.showCamera) {
 	        return (
-	        	<View style={{ flex: 1 }}>
-		        	<View style={styles.bgImageWrapper}>
-		        		<Image source={SplashImage} style={styles.bgImage}/>
-		        	</View>
 		            <Camera
 		                ref="cam"
 		                style={styles.container}
@@ -50,7 +48,6 @@ var PhoneApp = React.createClass ({
 					        </Button>    
 					    </View>
 		            </Camera>
-	            </View>
 	        );
 	    } else {
 	        return (
@@ -97,7 +94,9 @@ var PhoneApp = React.createClass ({
 	        passProps: { 'server':this.props.server, 
 	        'userList': this.state.userList,
 	        'trashCans': trashCans,
-	    	}
+	        'mainTab': 'barcode',
+	    	},
+	    	callback:this.updateTrashCans,
 	    });
 	},
 
@@ -127,33 +126,38 @@ var PhoneApp = React.createClass ({
 		
 	},
 
-	nextPage(value)
+	nextPage(user)
 	{
+		if (Device.isIpad()){
+		  	this.props.navigator.push({
+		        title: 'Main Page',
+		        component: MainCollectorPage,
+		        navigationBarHidden: true,
+		        passProps: {'user': user,
+		        'server':this.props.server,
+		        'userList': this.state.userList,
+		        'trashCans': trashCans,
+	          'device' : 'iPad',
+	          'mainTab': 'barcode',
+		    	},
+		    	callback:this.updateTrashCans,
+		    });
+	    } else {
 
-		var user = null;
-
-		for(var i = 0; i<this.state.userList.length; i++)
-		{
-			var name = this.state.userList[i].first_name + ' ' + this.state.userList[i].last_name;
-
-			if (name == value)
-			{
-				user = this.state.userList[i];
-				break;
-			}
-		}
-		console.log(user);
-	  	this.props.navigator.push({
-	        title: 'Main Page',
-	        component: MainPage,
-	        navigationBarHidden: true,
-	        passProps: {'user': user, 
-	        'server':this.props.server, 
-	        'userList': this.state.userList,
-	        'trashCans': trashCans,
-	    	},
-	    	callback:this.updateTrashCans,
-	    });
+		  	this.props.navigator.push({
+		        title: 'Main Page',
+		        component: MainPage,
+		        navigationBarHidden: true,
+		        passProps: {'user': user,
+		        'server':this.props.server,
+		        'userList': this.state.userList,
+		        'trashCans': trashCans,
+	          'device' : 'iPhone',
+	          'mainTab': 'barcode',
+		    	},
+		    	callback:this.updateTrashCans,
+		    });
+	    }
   	},
 
 	render(){
@@ -189,16 +193,7 @@ var styles = StyleSheet.create({
     },
     buttonText: {
         color: "#FFFFFF"
-    },
-    bgImageWrapper: {
-        position: 'absolute',
-        top: 0, bottom: 0, left: 0, right: 0
-    },
-    bgImage: {
-        flex: 1,
-        resizeMode: "stretch"
-    },
-
+    }
 });
 
 module.exports = PhoneApp;

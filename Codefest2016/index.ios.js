@@ -34,7 +34,7 @@ var Codefest2016 = React.createClass({
         <NavigatorIOS
           style = {styles.container}
           initialRoute={{
-            title: "Select User",
+            title: "Select User Barcode",
             navigationBarHidden: true,
             component:PhoneApp,
             passProps: {'server': server}

@@ -4,6 +4,7 @@ import React, {
   Text,
   View,
   StyleSheet,
+  Image,
 } from 'react-native';
 
 import DropDown, {
@@ -15,9 +16,11 @@ import DropDown, {
 var MainPage = require('./CodeFestModules/MainPage');
 var MainCollectorPage = require('./CodeFestModules/MainCollectorPage')
 var Immutable = require('immutable');
+var SplashImage = require('./images/splash.png');
 var Device = require('react-native-device');
 var PolygonCreator = require('./examples/PolygonCreator');
 var trashCans = Immutable.List()
+
 class App extends Component {
 
 	componentWillMount(){
@@ -60,7 +63,15 @@ class App extends Component {
 	}
 
 	updateTrashCans(refer){
-		trashCans = refer.getTrashCans();
+		if(this.props.mainTab == 'barcode')
+		{
+			this.props.route.callback(refer);
+			this.props.navigator.pop();
+		}
+		else
+		{
+			trashCans = refer.getTrashCans();
+		}
 	}
 
 	nextPage(value)
@@ -78,40 +89,51 @@ class App extends Component {
 				break;
 			}
 		}
-    if (Device.isIpad()){
-	  	this.props.navigator.push({
-	        title: 'Main Page',
-	        component: MainCollectorPage,
-	        navigationBarHidden: true,
-	        passProps: {'user': user,
-	        'server':this.props.server,
-	        'userList': this.state.userList,
-	        'trashCans': trashCans,
-          'device' : 'iPad',
-	    	},
-	    	callback:this.updateTrashCans,
-	    });
-    } else {
-	  	this.props.navigator.push({
-	        title: 'Main Page',
-	        component: MainPage,
-	        navigationBarHidden: true,
-	        passProps: {'user': user,
-	        'server':this.props.server,
-	        'userList': this.state.userList,
-	        'trashCans': trashCans,
-          'device' : 'iPhone',
-	    	},
-	    	callback:this.updateTrashCans,
-	    });
-    }
+
+		console.log(user);
+		var cb = this.updateTrashCans;
+		if(this.props.mainTab == 'barcode')
+		{
+			cb = this.props.route.callback;
+			trashCans = this.props.trashCans;
+		}
+
+	    if (Device.isIpad()){
+		  	this.props.navigator.push({
+		        title: 'Main Page',
+		        component: MainCollectorPage,
+		        navigationBarHidden: true,
+		        passProps: {'user': user,
+		        'server':this.props.server,
+		        'userList': this.state.userList,
+		        'trashCans': trashCans,
+	          'device' : 'iPad',
+		    	},
+		    	callback:this.updateTrashCans,
+		    });
+	    } else {
+
+		  	this.props.navigator.push({
+		        title: 'Main Page',
+		        component: MainPage,
+		        navigationBarHidden: true,
+		        passProps: {'user': user,
+		        'server':this.props.server,
+		        'userList': this.state.userList,
+		        'trashCans': trashCans,
+	          'device' : 'iPhone',
+		    	},
+		    	callback:cb,
+		    });
+	    }
 
   	}
 
 	render(){
-
 		return (
-
+			
+	        	
+	        <Image source={SplashImage} style={styles.bgImage}>
 			<View style={styles.optionBox}>
 		      <Select
 		        width={250}
@@ -134,6 +156,9 @@ class App extends Component {
 		      </Select>
 		      <OptionList ref="OPTIONLIST"/>
 			</View>
+			</Image>
+	        	
+			
 		);
 	}
 }
@@ -143,16 +168,42 @@ var styles = StyleSheet.create({
 		flex: 1,
 		justifyContent: 'center',
 		alignItems: 'center'
+
 	},
   container: {
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    right: 0,
-    bottom: 0,
-    justifyContent: 'flex-end',
-    alignItems: 'center',
-  },
+        flex: 1,
+        justifyContent: "center",
+        alignItems: "center",
+        backgroundColor: "transparent",
+    },
+    buttonBar: {
+        flexDirection: "row",
+        position: "absolute",
+        top: 44,
+        right: 0,
+        left: 0,
+        justifyContent: "center"
+    },
+    button: {
+        padding: 10,
+        color: "#FFFFFF",
+        borderWidth: 1,
+        borderColor: "#FFFFFF",
+        margin: 5
+    },
+    buttonText: {
+        color: "#FFFFFF"
+    },
+    bgImageWrapper: {
+        position: 'absolute',
+        top: 0, bottom: 0, left: 0, right: 0
+    },
+    bgImage: {
+        flex: 1,
+        width: null,
+        height: null,
+        //resizeMode: "stretch"
+    },
 });
 
 module.exports = App;
