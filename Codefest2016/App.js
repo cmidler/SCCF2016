@@ -11,7 +11,7 @@ import DropDown, {
   Select,
   Option,
   OptionList,
-} from 'react-native-selectme';
+} from './CodeFestModules/react-native-selectme';
 
 var MainPage = require('./CodeFestModules/MainPage');
 var MainCollectorPage = require('./CodeFestModules/MainCollectorPage')
@@ -43,19 +43,19 @@ class App extends Component {
   	//get all trash cans and parse into lat lons
 	async _loadUserList() {
 		// console.log("load user list is called");
-    // this.setState({userList:['hi']});
-		var url = 'http://' + this.props.server +':8000/listusers';
-	  	return fetch(url)
-	    .then((response) => response.json())
-	    .then((json) => {
-
-			this.setState({userList:json.result});
-			//console.log("user list is " + userList)
-			return json.result;
-	  })
-	  .catch((error) => {
-	    return [];
-	  });
+    this.setState({userList:['hi']});
+		// var url = 'http://' + this.props.server +':8000/listusers';
+	  // 	return fetch(url)
+	  //   .then((response) => response.json())
+	  //   .then((json) => {
+    //
+		// 	this.setState({userList:json.result});
+		// 	//console.log("user list is " + userList)
+		// 	return json.result;
+	  // })
+	  // .catch((error) => {
+	  //   return [];
+	  // });
 	}
 
 	_getOptionList() {
@@ -131,9 +131,8 @@ class App extends Component {
 
 	render(){
 		return (
-			
-	        	
-	        <Image source={SplashImage} style={styles.bgImage}>
+
+	    <Image source={SplashImage} style={styles.bgImage}>
 			<View style={styles.optionBox}>
 		      <Select
 		        width={250}
@@ -157,8 +156,8 @@ class App extends Component {
 		      <OptionList ref="OPTIONLIST"/>
 			</View>
 			</Image>
-	        	
-			
+
+
 		);
 	}
 }
@@ -203,6 +202,10 @@ var styles = StyleSheet.create({
         width: null,
         height: null,
         //resizeMode: "stretch"
+    },
+    backgroundImageContainer: {
+        position: 'absolute',
+        flex: 1,
     },
 });
 

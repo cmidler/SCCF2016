@@ -1,0 +1,84 @@
+{
+  "_args": [
+    [
+      "react-native-selectme@^1.0.0",
+      "/Users/afostvedt/code/codefest/SCCF2016/Codefest2016"
+    ]
+  ],
+  "_from": "react-native-selectme@>=1.0.0 <2.0.0",
+  "_id": "react-native-selectme@1.0.0",
+  "_inCache": true,
+  "_installable": true,
+  "_location": "/react-native-selectme",
+  "_nodeVersion": "4.2.4",
+  "_npmOperationalInternal": {
+    "host": "packages-5-east.internal.npmjs.com",
+    "tmp": "tmp/react-native-selectme-1.0.0.tgz_1454873254453_0.31717200111597776"
+  },
+  "_npmUser": {
+    "email": "azhar.mw@gmail.com",
+    "name": "js-media"
+  },
+  "_npmVersion": "2.14.12",
+  "_phantomChildren": {},
+  "_requested": {
+    "name": "react-native-selectme",
+    "raw": "react-native-selectme@^1.0.0",
+    "rawSpec": "^1.0.0",
+    "scope": null,
+    "spec": ">=1.0.0 <2.0.0",
+    "type": "range"
+  },
+  "_requiredBy": [
+    "/"
+  ],
+  "_resolved": "https://registry.npmjs.org/react-native-selectme/-/react-native-selectme-1.0.0.tgz",
+  "_shasum": "21b2f5d473eca1bf965d16b3676a5accffa73380",
+  "_shrinkwrap": null,
+  "_spec": "react-native-selectme@^1.0.0",
+  "_where": "/Users/afostvedt/code/codefest/SCCF2016/Codefest2016",
+  "author": {
+    "email": "azhar.mw@gmail.com",
+    "name": "akhan",
+    "url": "https://github.com/gs-akhan"
+  },
+  "bugs": {
+    "url": "https://github.com/gs-akhan/react-native-select/issues"
+  },
+  "dependencies": {},
+  "description": "A better Select dropdown menu for react-native",
+  "devDependencies": {},
+  "directories": {},
+  "dist": {
+    "shasum": "21b2f5d473eca1bf965d16b3676a5accffa73380",
+    "tarball": "https://registry.npmjs.org/react-native-selectme/-/react-native-selectme-1.0.0.tgz"
+  },
+  "gitHead": "9f6e55426cc5be527bd3542421a28345dac4d2cf",
+  "homepage": "https://github.com/gs-akhan/react-native-select",
+  "keywords": [
+    "react-component",
+    "react-native",
+    "react-native-dropdown",
+    "ios",
+    "android"
+  ],
+  "license": "MIT",
+  "main": "lib/index.js",
+  "maintainers": [
+    {
+      "email": "azhar.mw@gmail.com",
+      "name": "js-media"
+    }
+  ],
+  "name": "react-native-selectme",
+  "optionalDependencies": {},
+  "readme": "ERROR: No README data found!",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/gs-akhan/react-native-select.git"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "version": "1.0.0"
+}
