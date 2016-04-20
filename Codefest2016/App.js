@@ -43,19 +43,19 @@ class App extends Component {
   	//get all trash cans and parse into lat lons
 	async _loadUserList() {
 		// console.log("load user list is called");
-    this.setState({userList:['hi']});
-		// var url = 'http://' + this.props.server +':8000/listusers';
-	  // 	return fetch(url)
-	  //   .then((response) => response.json())
-	  //   .then((json) => {
-    //
-		// 	this.setState({userList:json.result});
-		// 	//console.log("user list is " + userList)
-		// 	return json.result;
-	  // })
-	  // .catch((error) => {
-	  //   return [];
-	  // });
+    // this.setState({userList:['hi']});
+		var url = 'http://' + this.props.server +':8000/listusers';
+	  	return fetch(url)
+	    .then((response) => response.json())
+	    .then((json) => {
+
+			this.setState({userList:json.result});
+			//console.log("user list is " + userList)
+			return json.result;
+	  })
+	  .catch((error) => {
+	    return [];
+	  });
 	}
 
 	_getOptionList() {
