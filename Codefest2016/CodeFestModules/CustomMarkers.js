@@ -123,7 +123,9 @@ var CustomMarkers = React.createClass({
 
   getRoute: function(){
     console.log('getroute called');
-    var url = 'http://' + this.props.server +':8000/route?user_id=1';
+    // var url = 'http://' + this.props.server +':8000/route?user_id=1';
+    var url = 'http://' + this.props.server +':8000/route_2?user_id=1';
+    // var url = 'http://localhost:8000/route_2?user_id=1';
     var points;
     fetch(url)
        .then((response) => {console.log(response); return response.json()})

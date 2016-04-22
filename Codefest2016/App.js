@@ -44,7 +44,10 @@ class App extends Component {
 	async _loadUserList() {
 		// console.log("load user list is called");
     // this.setState({userList:['hi']});
+    console.log('\n\nSERVER : ');
+    console.log(this.props.server);
 		var url = 'http://' + this.props.server +':8000/listusers';
+    // var url = "http://localhost:8000/listusers";
 	  	return fetch(url)
 	    .then((response) => response.json())
 	    .then((json) => {
